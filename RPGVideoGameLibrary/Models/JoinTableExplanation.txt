@@ -1,0 +1,8 @@
+﻿**Note**
+For classes with ICollections:
+-These ICollections show the class' relation to the joint tables
+
+For classes with another class in:
+-A single instance of another class shows that it has that class as a foreign key in the database.
+
+All classes have reference section that shows what connects it to the other classes and how.
