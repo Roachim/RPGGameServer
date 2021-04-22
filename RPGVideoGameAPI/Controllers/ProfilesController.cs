@@ -48,7 +48,7 @@ namespace RPGVideoGameAPI.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProfile(int id, Profile profile)
         {
-            if (id != profile.Uid)
+            if (id != profile.UID)
             {
                 return BadRequest();
             }
@@ -83,7 +83,7 @@ namespace RPGVideoGameAPI.Controllers
             _context.Profile.Add(profile);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProfile", new { id = profile.Uid }, profile);
+            return CreatedAtAction("GetProfile", new { id = profile.UID }, profile);
         }
 
         // DELETE: api/Profiles/5
@@ -104,7 +104,7 @@ namespace RPGVideoGameAPI.Controllers
 
         private bool ProfileExists(int id)
         {
-            return _context.Profile.Any(e => e.Uid == id);
+            return _context.Profile.Any(e => e.UID == id);
         }
     }
 }
