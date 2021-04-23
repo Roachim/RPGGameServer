@@ -8,12 +8,12 @@ namespace RPGVideoGameLibrary.Models
 {
     public class Inventory_Item
     {
-        [Key]
+        //[Key]
         [Column(Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Inventory_Id { get; set; }
 
-        [Key]
+        //[Key]
         [Column(Order = 1)]
         [StringLength(30)]
         public string Item_Name { get; set; }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace RPGVideoGameLibrary.Models
@@ -10,7 +11,7 @@ namespace RPGVideoGameLibrary.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Passive()
         {
-            Characters = new HashSet<Character>();
+            this.Characters = new HashSet<Character>();
         }
 
         [Key]

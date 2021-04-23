@@ -35,10 +35,15 @@ namespace RPGVideoGameLibrary.Context
                 .WithRequired(e => e.Character);
 
             modelBuilder.Entity<Character>()
-                .HasMany(e => e.Passives)
-                .WithMany(e => e.Characters)
-                .Map(m => m.ToTable("Characters_Passives").MapLeftKey("Character_Id").MapRightKey("Passive_Name"));
-
+                .HasMany<Passive>(c => c.Passives)
+                .WithMany(p => p.Characters)
+                .Map(cp =>
+                {
+                    cp.MapLeftKey("Character_Id");
+                    cp.MapRightKey("Passive_Name");
+                    cp.ToTable("Characters_Passives");
+                });
+            //m => m.ToTable("Characters_Passives").MapLeftKey("Character_Id").MapRightKey("Passive_Name")
             modelBuilder.Entity<Character>()
                 .HasMany(e => e.Skills)
                 .WithMany(e => e.Characters)
@@ -110,8 +115,11 @@ namespace RPGVideoGameLibrary.Context
                 .WithRequired(e => e.Profile)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Inventory_Equipment>()
+                .HasKey(e => e.Equipment_Id)
+                .HasKey(e => e.Inventory_Id);
 
-            
+
         }
     }
 }

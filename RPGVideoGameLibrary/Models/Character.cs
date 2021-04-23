@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace RPGVideoGameLibrary.Models
@@ -10,8 +11,8 @@ namespace RPGVideoGameLibrary.Models
         
         public Character()
         {
-            Passives = new HashSet<Passive>();
-            Skills = new HashSet<Skill>();
+            this.Passives = new HashSet<Passive>();
+            this.Skills = new HashSet<Skill>();
 
         }
         [Key]
@@ -38,8 +39,8 @@ namespace RPGVideoGameLibrary.Models
         //references
         public Profile Profile { get; set; }
         public Inventory Inventory { get; set; }
-        public ICollection<Passive> Passives { get; set; }
-        public ICollection<Skill> Skills { get; set; }
+        public virtual ICollection<Passive> Passives { get; set; }
+        public virtual ICollection<Skill> Skills { get; set; }
 
         //equipment
         public Equipment HeadEquipment { get; set; }
