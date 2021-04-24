@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+
+#nullable disable
 
 namespace RPGVideoGameLibrary.Models
 {
-    public class Passive
+    public partial class Passive
     {
-        [Key] public string Passive_Name { get; set; }
+        public Passive()
+        {
+            CharactersPassives = new HashSet<CharactersPassife>();
+        }
+
+        public string PassiveName { get; set; }
         public string Description { get; set; }
         public string Effect { get; set; }
-        //references
-        public ICollection<Character_Passive> CharacterPassives { get; set; }
+
+        public virtual ICollection<CharactersPassife> CharactersPassives { get; set; }
     }
 }

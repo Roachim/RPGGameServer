@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+
+#nullable disable
 
 namespace RPGVideoGameLibrary.Models
 {
-    public class Item
+    public partial class Item
     {
-        [Key] public string Item_Name { get; set; }
+        public Item()
+        {
+            InventoryItems = new HashSet<InventoryItem>();
+        }
+
+        public string ItemName { get; set; }
         public string Type { get; set; }
         public string Description { get; set; }
         public string Effect { get; set; }
-        //references
-        public ICollection<Inventory_Item> InventoryItems { get; set; }
+
+        public virtual ICollection<InventoryItem> InventoryItems { get; set; }
     }
 }

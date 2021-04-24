@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+
+#nullable disable
 
 namespace RPGVideoGameLibrary.Models
 {
-    public class Profile
+    public partial class Profile
     {
-        [Key] public int Uid { get; set; }
-        public String Name { get; set; }
+        public Profile()
+        {
+            Characters = new HashSet<Character>();
+        }
+
+        public int Uid { get; set; }
+        public string Name { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
-        //references
-        public ICollection<Character> Characters { get; set; }
 
-
+        public virtual ICollection<Character> Characters { get; set; }
     }
 }

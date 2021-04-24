@@ -1,22 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+
+#nullable disable
 
 namespace RPGVideoGameLibrary.Models
 {
-    public class Inventory
+    public partial class Inventory
     {
-        [Key]
-        public int Inventory_Id { get; set; }
-        public int Character_Id { get; set; }
-        public int Maximum_Space { get; set; }
-        public int Occupied_Space { get; set; }
-        public Character Character { get; set; }
-        //references
-        public ICollection<Inventory_Item> InventoryItems { get; set; }
-        public ICollection<Inventory_Equipment> InventoryEquipments { get; set; }
+        public Inventory()
+        {
+            InventoryEquipments = new HashSet<InventoryEquipment>();
+            InventoryItems = new HashSet<InventoryItem>();
+        }
 
+        public int InventoryId { get; set; }
+        public int MaximumSpace { get; set; }
+        public int OccupiedSpace { get; set; }
 
+        public virtual Character InventoryNavigation { get; set; }
+        public virtual ICollection<InventoryEquipment> InventoryEquipments { get; set; }
+        public virtual ICollection<InventoryItem> InventoryItems { get; set; }
     }
 }

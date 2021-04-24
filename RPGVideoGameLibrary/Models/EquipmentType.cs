@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
-using RPGVideoGameLibrary.Enums;
+
+#nullable disable
 
 namespace RPGVideoGameLibrary.Models
 {
-    public class EquipmentType
+    public partial class EquipmentType
     {
-        [Key]
-        public int EquipmentType_Id { get; set; }
-        public Equipment_Type Name { get; set; }
-        //references
-        public ICollection<Equipment> Equipments { get; set; }
+        public EquipmentType()
+        {
+            Equipment = new HashSet<Equipment>();
+        }
+
+        public byte EquipmentTypeId { get; set; }
+        public string Name { get; set; }
+
+        public virtual ICollection<Equipment> Equipment { get; set; }
     }
 }

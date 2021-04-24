@@ -1,40 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+
+#nullable disable
 
 namespace RPGVideoGameLibrary.Models
 {
-    public class Character
+    public partial class Character
     {
-        [Key]
-        public int Id { get; set; }
+        public Character()
+        {
+            CharactersPassives = new HashSet<CharactersPassife>();
+            CharactersSkills = new HashSet<CharactersSkill>();
+        }
 
-        public String CharacterName { get; set; }
-        public int HP { get; set; }
-        public int Attack { get; set; }
-        public int Defense { get; set; }
-        public int UID { get; set; }
-        public int Head { get; set; }
-        public int Chest { get; set; }
-        public int Hands { get; set; }
-        public int Legs { get; set; }
-        public int Feet { get; set; }
-        public int Left_Hand { get; set; }
-        public int Right_Hand { get; set; }
-        //references
+        public int CharacterId { get; set; }
+        public string CharacterName { get; set; }
+        public int Hp { get; set; }
+        public int Atk { get; set; }
+        public int Def { get; set; }
+        public int Uid { get; set; }
+        public short? Head { get; set; }
+        public short? Chest { get; set; }
+        public short? Hands { get; set; }
+        public short? Legs { get; set; }
+        public short? Feet { get; set; }
+        public short? LeftHand { get; set; }
+        public short? RightHand { get; set; }
 
-        public ICollection<Character_Passive> CharacterPassives { get; set; }
-        public ICollection<Character_skill> CharacterSkills { get; set; }
-        public Equipment HeadEquipment { get; set; }
-        public Equipment ChestEquipment { get; set; }
-        public Equipment HandsEquipment { get; set; }
-        public Equipment LegsEquipment { get; set; }
-        public Equipment FeetEquipment { get; set; }
-        public Equipment Left_HandEquipment { get; set; }
-        public Equipment Right_HandEquipment { get; set; }
-
-
-
+        public virtual Equipment ChestNavigation { get; set; }
+        public virtual Equipment FeetNavigation { get; set; }
+        public virtual Equipment HandsNavigation { get; set; }
+        public virtual Equipment HeadNavigation { get; set; }
+        public virtual Equipment LeftHandNavigation { get; set; }
+        public virtual Equipment LegsNavigation { get; set; }
+        public virtual Equipment RightHandNavigation { get; set; }
+        public virtual Profile UidNavigation { get; set; }
+        public virtual Inventory Inventory { get; set; }
+        public virtual ICollection<CharactersPassife> CharactersPassives { get; set; }
+        public virtual ICollection<CharactersSkill> CharactersSkills { get; set; }
     }
 }
