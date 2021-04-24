@@ -9,7 +9,7 @@ namespace RPGVideoGameLibrary.Models
     {
         public Character()
         {
-            CharactersPassives = new HashSet<CharactersPassife>();
+            CharactersPassives = new HashSet<CharactersPassive>();
             CharactersSkills = new HashSet<CharactersSkill>();
         }
 
@@ -36,7 +36,7 @@ namespace RPGVideoGameLibrary.Models
         public virtual Equipment RightHandNavigation { get; set; }
         public virtual Profile UidNavigation { get; set; }
         public virtual Inventory Inventory { get; set; }
-        public virtual ICollection<CharactersPassife> CharactersPassives { get; set; }
+        public virtual ICollection<CharactersPassive> CharactersPassives { get; set; }
         public virtual ICollection<CharactersSkill> CharactersSkills { get; set; }
     }
 }

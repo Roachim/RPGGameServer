@@ -19,7 +19,7 @@ namespace RPGVideoGameLibrary.Models
 
         public virtual DbSet<Character> Characters { get; set; }
         public virtual DbSet<CharacterSkill> CharacterSkills { get; set; }
-        public virtual DbSet<CharactersPassife> CharactersPassives { get; set; }
+        public virtual DbSet<CharactersPassive> CharactersPassives { get; set; }
         public virtual DbSet<CharactersSkill> CharactersSkills { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
         public virtual DbSet<EquipmentType> EquipmentTypes { get; set; }
@@ -122,7 +122,7 @@ namespace RPGVideoGameLibrary.Models
                     .HasColumnName("Skill_Name");
             });
 
-            modelBuilder.Entity<CharactersPassife>(entity =>
+            modelBuilder.Entity<CharactersPassive>(entity =>
             {
                 entity.HasKey(e => new { e.CharacterId, e.PassiveName })
                     .HasName("PK__Characte__938C7154635F4204");
