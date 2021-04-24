@@ -1,55 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Reflection.Metadata;
-using System.Text;
+
+#nullable disable
 
 namespace RPGVideoGameLibrary.Models
 {
-    //[Table("Equipment")]
-    public class Equipment
+    public partial class Equipment
     {
         public Equipment()
         {
-            Characters1 = new HashSet<Character>();
-            Characters2 = new HashSet<Character>();
-            Characters3 = new HashSet<Character>();
-            Characters4 = new HashSet<Character>();
-            Characters5 = new HashSet<Character>();
-            Characters6 = new HashSet<Character>();
-            Characters7 = new HashSet<Character>();
-
+            CharacterChestNavigations = new HashSet<Character>();
+            CharacterFeetNavigations = new HashSet<Character>();
+            CharacterHandsNavigations = new HashSet<Character>();
+            CharacterHeadNavigations = new HashSet<Character>();
+            CharacterLeftHandNavigations = new HashSet<Character>();
+            CharacterLegsNavigations = new HashSet<Character>();
+            CharacterRightHandNavigations = new HashSet<Character>();
+            InventoryEquipments = new HashSet<InventoryEquipment>();
         }
-        [Key]
-        public short Equipment_Id { get; set; }
 
-        [Required]
-        [StringLength(30)]
+        public short EquipmentId { get; set; }
         public string Name { get; set; }
-
-        //EquipmentType is tinyInt in database
-        public EquipmentType EquipmentType { get; set; }
-        
-        [StringLength(150)]
+        public byte EquipmentType { get; set; }
         public string Description { get; set; }
-        public int? HP { get; set; }
+        public int? Hp { get; set; }
         public int? Atk { get; set; }
         public int? Def { get; set; }
-        //references
-        public ICollection<Inventory_Equipment> InventoryEquipments { get; set; }
 
-        public EquipmentType EType { get; set; }
-
-        public ICollection<Character> Characters1 { get; set; }
-        public ICollection<Character> Characters2 { get; set; }
-        public ICollection<Character> Characters3 { get; set; }
-        public ICollection<Character> Characters4 { get; set; }
-        public ICollection<Character> Characters5 { get; set; }
-        public ICollection<Character> Characters6 { get; set; }
-        public ICollection<Character> Characters7 { get; set; }
-
+        public virtual EquipmentType EquipmentTypeNavigation { get; set; }
+        public virtual ICollection<Character> CharacterChestNavigations { get; set; }
+        public virtual ICollection<Character> CharacterFeetNavigations { get; set; }
+        public virtual ICollection<Character> CharacterHandsNavigations { get; set; }
+        public virtual ICollection<Character> CharacterHeadNavigations { get; set; }
+        public virtual ICollection<Character> CharacterLeftHandNavigations { get; set; }
+        public virtual ICollection<Character> CharacterLegsNavigations { get; set; }
+        public virtual ICollection<Character> CharacterRightHandNavigations { get; set; }
+        public virtual ICollection<InventoryEquipment> InventoryEquipments { get; set; }
     }
-
-    
 }

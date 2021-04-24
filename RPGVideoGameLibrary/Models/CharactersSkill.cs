@@ -5,10 +5,12 @@ using System.Collections.Generic;
 
 namespace RPGVideoGameLibrary.Models
 {
-    public partial class CharacterSkill
+    public partial class CharactersSkill
     {
         public int CharacterId { get; set; }
-        public string CharacterName { get; set; }
         public string SkillName { get; set; }
+
+        public virtual Character Character { get; set; }
+        public virtual Skill SkillNameNavigation { get; set; }
     }
 }

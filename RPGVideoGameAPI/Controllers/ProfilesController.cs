@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RPGVideoGameAPI.Data;
 using RPGVideoGameLibrary.Models;
+
+//using RPGVideoGameLibrary.Models;
 
 namespace RPGVideoGameAPI.Controllers
 {
@@ -14,97 +15,103 @@ namespace RPGVideoGameAPI.Controllers
     [ApiController]
     public class ProfilesController : ControllerBase
     {
-        private readonly RPGVideoGameAPIContext _context;
+        private readonly OnlineRPGContext _context;
 
-        public ProfilesController(RPGVideoGameAPIContext context)
+        public ProfilesController()
         {
-            _context = context;
+            
         }
+
+        //[HttpGet]
+        //public IEnumerable<object> ProfileName()
+        //{
+        //    return _context.Profiles.Select(p => new {p.Name, Characters = p.Characters.Select(c => new {c.CharacterName})});
+        //}
 
         // GET: api/Profiles
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Profile>>> GetProfile()
-        {
-            return await _context.Profile.ToListAsync();
-        }
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<Profile>>> GetProfile()
+        //{
+        //    return await _context.Profile.ToListAsync();
+        //}
 
         // GET: api/Profiles/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Profile>> GetProfile(int id)
-        {
-            var profile = await _context.Profile.FindAsync(id);
+        //[HttpGet("{id}")]
+        //public async Task<ActionResult<Profile>> GetProfile(int id)
+        //{
+        //    var profile = await _context.Profile.FindAsync(id);
 
-            if (profile == null)
-            {
-                return NotFound();
-            }
+        //    if (profile == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return profile;
-        }
+        //    return profile;
+        //}
 
-        // PUT: api/Profiles/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutProfile(int id, Profile profile)
-        {
-            if (id != profile.UID)
-            {
-                return BadRequest();
-            }
+        //// PUT: api/Profiles/5
+        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
+        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> PutProfile(int id, Profile profile)
+        //{
+        //    if (id != profile.UID)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            _context.Entry(profile).State = EntityState.Modified;
+        //    _context.Entry(profile).State = EntityState.Modified;
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProfileExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+        //    try
+        //    {
+        //        await _context.SaveChangesAsync();
+        //    }
+        //    catch (DbUpdateConcurrencyException)
+        //    {
+        //        if (!ProfileExists(id))
+        //        {
+        //            return NotFound();
+        //        }
+        //        else
+        //        {
+        //            throw;
+        //        }
+        //    }
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
 
-        // POST: api/Profiles
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Profile>> PostProfile(Profile profile)
-        {
-            _context.Profile.Add(profile);
-            await _context.SaveChangesAsync();
+        //// POST: api/Profiles
+        //// To protect from overposting attacks, enable the specific properties you want to bind to, for
+        //// more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        //[HttpPost]
+        //public async Task<ActionResult<Profile>> PostProfile(Profile profile)
+        //{
+        //    _context.Profile.Add(profile);
+        //    await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetProfile", new { id = profile.UID }, profile);
-        }
+        //    return CreatedAtAction("GetProfile", new { id = profile.UID }, profile);
+        //}
 
-        // DELETE: api/Profiles/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Profile>> DeleteProfile(int id)
-        {
-            var profile = await _context.Profile.FindAsync(id);
-            if (profile == null)
-            {
-                return NotFound();
-            }
+        //// DELETE: api/Profiles/5
+        //[HttpDelete("{id}")]
+        //public async Task<ActionResult<Profile>> DeleteProfile(int id)
+        //{
+        //    var profile = await _context.Profile.FindAsync(id);
+        //    if (profile == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _context.Profile.Remove(profile);
-            await _context.SaveChangesAsync();
+        //    _context.Profile.Remove(profile);
+        //    await _context.SaveChangesAsync();
 
-            return profile;
-        }
+        //    return profile;
+        //}
 
-        private bool ProfileExists(int id)
-        {
-            return _context.Profile.Any(e => e.UID == id);
-        }
+        //private bool ProfileExists(int id)
+        //{
+        //    return _context.Profile.Any(e => e.UID == id);
+        //}
     }
 }

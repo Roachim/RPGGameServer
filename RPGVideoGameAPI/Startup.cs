@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using RPGVideoGameAPI.Data;
+using RPGVideoGameLibrary.Models;
 
 namespace RPGVideoGameAPI
 {
@@ -28,8 +29,10 @@ namespace RPGVideoGameAPI
         {
             services.AddControllers();
 
-            services.AddDbContext<RPGVideoGameAPIContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("RPGVideoGameAPIContext")));
+            //services.AddDbContext<RPGVideoGameAPIContext>(options =>
+            //        options.UseSqlServer(Configuration.GetConnectionString("RPGVideoGameAPIContext")));
+
+            services.AddSingleton<OnlineRPGContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
