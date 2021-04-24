@@ -39,6 +39,14 @@ namespace RPGVideoGameAPI.Controllers
         }
         //_context.Profiles.Select(p => new { p.Name, Characters = p.Characters.Select(c => new { c.CharacterName }) });
 
+        [HttpPut]
+        [Route("ChangeEquipment")]
+        public async Task<string> ChangeEquipment([FromBody] Character character, [FromQuery] short EquipmentId)
+        {
+
+            return await _userAccountService.ChangeEquipment(character, EquipmentId);
+        }
+
 
         
     }

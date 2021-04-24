@@ -47,7 +47,19 @@ namespace RPGVideoGameAPI.Services
             return $"Create character {character.CharacterName}";
         }
 
+        public async Task<string> ChangeEquipment(Character character, short equipmentId)
+        {
+            Equipment equipment = await GetEquipment(equipmentId);
 
+            _context.Characters.Update(character);
+            await _context.SaveChangesAsync();
+            return $"{character.CharacterName} put on {equipment.Name}";
+        }
+
+        public async Task<Equipment> GetEquipment(short equipmentId)
+        {
+            return await _context.Equipment.FindAsync(equipmentId);
+        }
         #endregion
 
 
