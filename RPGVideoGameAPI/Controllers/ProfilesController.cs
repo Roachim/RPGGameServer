@@ -32,12 +32,48 @@ namespace RPGVideoGameAPI.Controllers
 
         #endregion
 
+        #region Http
+
+        #region Profile
+
         [HttpGet]
-        public async Task<IEnumerable<object>> ProfileName()
+        public async Task<IEnumerable<object>> GetAllProfiles()
         {
             return await _userAccountService.GetAllProfiles();
         }
         //_context.Profiles.Select(p => new { p.Name, Characters = p.Characters.Select(c => new { c.CharacterName }) });
+
+        [HttpGet]
+        [Route("{profileId}")]
+        public async Task<object> OneProfile(int profileId)
+        {
+            return await _userAccountService.GetProfile(profileId);
+        }
+
+        [HttpPost]
+        [Route("CreateProfile")]
+        public async Task<string> AddNewProfile([FromBody]Profile profile)
+        {
+            return await _userAccountService.AddNewProfile(profile);
+        }
+
+        [HttpPut]
+        [Route("UpdateProfile")]
+        public async Task<string> UpdateProfile([FromBody]Profile profile)
+        {
+            return await _userAccountService.UpdateProfile(profile);
+        }
+        
+
+        [HttpDelete]
+        [Route("DeleteProfile/{profileId}")]
+        public async Task<string> DeleteProfile(int profileId)
+        {
+            return await _userAccountService.DeleteProfile(profileId);
+        }
+
+
+        #endregion
 
         [HttpPut]
         [Route("ChangeEquipment")]
@@ -47,7 +83,8 @@ namespace RPGVideoGameAPI.Controllers
             return await _userAccountService.ChangeEquipment(character, EquipmentId);
         }
 
-
         
+        #endregion
+
     }
 }
