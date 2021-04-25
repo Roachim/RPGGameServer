@@ -28,7 +28,8 @@ namespace RPGVideoGameAPI.Services
         #region Methods
         public async Task<IEnumerable<object>> GetAllProfiles()
         {
-            Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Profiles.Select(p => new { p.Name }).ToList);
+            Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Profiles.Select(p => new { p.Uid, p.Name, p.Email }).ToList);
+            task.Start();
             IEnumerable<object> ProfileList = await task;
             return ProfileList;
         }
@@ -50,7 +51,7 @@ namespace RPGVideoGameAPI.Services
         public async Task<string> ChangeEquipment(Character character, short equipmentId)
         {
             Equipment equipment = await GetEquipment(equipmentId);
-
+            character.Legs = equipmentId;
             _context.Characters.Update(character);
             await _context.SaveChangesAsync();
             return $"{character.CharacterName} put on {equipment.Name}";
