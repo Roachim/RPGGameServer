@@ -59,9 +59,9 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpPut]
         [Route("UpdateProfile")]
-        public async Task<string> UpdateProfile([FromBody]Profile profile)
+        public async Task<string> UpdateProfile([FromQuery]int profileId, [FromQuery] string name, [FromQuery] string email, [FromQuery] string password)
         {
-            return await _userAccountService.UpdateProfile(profile);
+            return await _userAccountService.UpdateProfile(profileId, name, email, password);
         }
         
 

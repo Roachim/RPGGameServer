@@ -64,13 +64,27 @@ namespace RPGVideoGameAPI.Services
             return $"Created profile {profile.Name} with the email {profile.Email}";
         }
 
-        public async Task<string> UpdateProfile(Profile profile)
+        public async Task<string> UpdateProfile(int profileId, string name = null, string email = null, string password = null)
         {
-            Profile exist = await _context.Profiles.FindAsync(profile.Uid);
+            Profile exist = await _context.Profiles.FindAsync(profileId);
             if (exist == null) { return "No profile found"; }
 
-            _context.ChangeTracker.Clear();
-            _context.Profiles.Update(profile);
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                exist.Name = name;
+            }
+            if (!string.IsNullOrWhiteSpace(email))
+            {
+                exist.Email = email;
+            }
+            if (!string.IsNullOrWhiteSpace(password))
+            {
+                exist.Password = password;
+            }
+
+
+            //_context.ChangeTracker.Clear();
+            _context.Profiles.Update(exist);
             await _context.SaveChangesAsync();
             return "Profile updated ";
 
