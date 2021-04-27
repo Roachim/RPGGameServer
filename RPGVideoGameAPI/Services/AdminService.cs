@@ -251,7 +251,81 @@ namespace RPGVideoGameAPI.Services
 
         #endregion
 
+        #region Equipment
 
+        public async Task<IEnumerable<object>> GetAllEquipment()
+        {
+            Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Equipment
+                .Select(e => new { e.EquipmentId, e.Name, e.EquipmentType, e.Description, e.Hp, e.Atk, e.Def }).ToList);
+            task.Start();
+            IEnumerable<object> equipmentList = await task;
+            return equipmentList;
+        }
+
+        /// <summary>
+        /// Get single equipment using the equipments id
+        /// </summary>
+        /// <param name="equipmentId"></param>
+        /// <returns>single object</returns>
+        public async Task<object> GetEquipment(short equipmentId)
+        {
+            Equipment equipment = await _context.Equipment.FindAsync(equipmentId);
+            if (equipment == null)
+                return null;
+            
+            return new { equipment.EquipmentId, equipment.Name, equipment.EquipmentType, equipment.Description, equipment.Hp, equipment.Atk, equipment.Def };
+        }
+
+
+        /// <summary>
+        /// Post new equipment to the database
+        /// </summary>
+        /// <param name="equipment"></param>
+        /// <returns>string with name of the new equipment</returns>
+        public async Task<string> AddNewEquipment(Equipment equipment)
+        {
+            _context.Equipment.Add(equipment);
+            await _context.SaveChangesAsync();
+            return $"Created equipment {equipment.Name}";
+        }
+
+        public async Task<string> UpdateEquipment(Equipment equipment)
+        {
+            Equipment exist = await _context.Equipment.FindAsync(equipment.EquipmentId);
+            if (exist == null)
+            {
+                return "No equipment found";
+            }
+
+            _context.ChangeTracker.Clear();
+            _context.Equipment.Update(equipment);
+            await _context.SaveChangesAsync();
+            return "equipment updated ";
+
+        }
+
+
+        /// <summary>
+        /// Deletes a single equipment from the database if found
+        /// </summary>
+        /// <param name="equipmentId"></param>
+        /// <returns>string telling whether or not equipment was deleted</returns>
+        public async Task<string> DeleteEquipment(short equipmentId)
+        {
+
+            Equipment equipment = await _context.Equipment.FindAsync(equipmentId);
+
+            if (equipment == null)
+            {
+                return "No equipment found";
+            }
+
+            _context.Equipment.Remove(equipment);
+            await _context.SaveChangesAsync();
+            return $"Deleted {equipment.Name}";
+        }
+
+        #endregion
 
 
         #region HelpMethods
