@@ -178,7 +178,78 @@ namespace RPGVideoGameAPI.Services
 
         #endregion
 
+        #region Passives
 
+        public async Task<IEnumerable<object>> GetAllPassives()
+        {
+            Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Passives
+                .Select(p => new { p.PassiveName, p.Effect, p.Description }).ToList);
+            task.Start();
+            IEnumerable<object> passivesList = await task;
+            return passivesList;
+        }
+
+        /// <summary>
+        /// Get single passive using the passives name
+        /// </summary>
+        /// <param name="passiveName"></param>
+        /// <returns>single object</returns>
+        public async Task<object> GetPassive(string passiveName)
+        {
+            Passive passive = await _context.Passives.FindAsync(passiveName);
+            return new { passive.PassiveName, passive.Effect, passive.Description };
+        }
+
+
+        /// <summary>
+        /// Post a new passive to the database
+        /// </summary>
+        /// <param name="passive"></param>
+        /// <returns>string with name of new passive</returns>
+        public async Task<string> AddNewPassive(Passive passive)
+        {
+            _context.Passives.Add(passive);
+            await _context.SaveChangesAsync();
+            return $"Created passive {passive.PassiveName}";
+        }
+
+        public async Task<string> UpdatePassive(Passive passive)
+        {
+            Passive exist = await _context.Passives.FindAsync(passive.PassiveName);
+            if (exist == null)
+            {
+                return "No item found";
+            }
+
+            _context.ChangeTracker.Clear();
+            _context.Passives.Update(passive);
+            await _context.SaveChangesAsync();
+            return "passive updated ";
+
+        }
+
+
+        /// <summary>
+        /// Deletes a single passive from database if found
+        /// </summary>
+        /// <param name="passiveName"></param>
+        /// <returns>string telling whether or not passive was deleted</returns>
+        public async Task<string> DeletePassive(string passiveName)
+        {
+
+            Passive passive = await _context.Passives.FindAsync(passiveName);
+
+            if (passive == null)
+            {
+                return "No item found";
+            }
+
+            _context.Passives.Remove(passive);
+            await _context.SaveChangesAsync();
+            return $"Deleted {passive.PassiveName}";
+        }
+
+        #endregion
 
 
 
