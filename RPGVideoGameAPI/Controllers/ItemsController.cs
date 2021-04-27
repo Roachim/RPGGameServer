@@ -59,7 +59,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpPut]
         [Route("UpdateItem")]
-        public async Task<string> UpdateProfile([FromBody] Item item)
+        public async Task<string> UpdateItem([FromBody] Item item)
         {
             return await _adminService.UpdateItem(item);
         }
@@ -67,42 +67,12 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteItem")]
-        public async Task<string> DeleteProfile([FromQuery]string itemName)
+        public async Task<string> DeleteItem([FromQuery]string itemName)
         {
             return await _adminService.DeleteItem(itemName);
         }
         #endregion
 
-
-
-
-
-
-
-
-        // GET api/<ItemsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<ItemsController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<ItemsController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<ItemsController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        
     }
 }
