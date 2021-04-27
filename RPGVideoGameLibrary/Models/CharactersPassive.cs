@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace RPGVideoGameLibrary.Models
 {
-    public partial class CharactersPassife
+    public partial class CharactersPassive
     {
         public int CharacterId { get; set; }
         public string PassiveName { get; set; }

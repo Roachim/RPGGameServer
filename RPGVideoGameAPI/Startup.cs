@@ -10,8 +10,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using RPGVideoGameAPI.Data;
+//using RPGVideoGameAPI.Data;
 using RPGVideoGameLibrary.Models;
+using RPGVideoGameAPI.Services;
 
 namespace RPGVideoGameAPI
 {
@@ -33,6 +34,9 @@ namespace RPGVideoGameAPI
             //        options.UseSqlServer(Configuration.GetConnectionString("RPGVideoGameAPIContext")));
 
             services.AddSingleton<OnlineRPGContext>();
+            services.AddSingleton<UserAccountService>();
+
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -42,6 +46,11 @@ namespace RPGVideoGameAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(options =>
+            {
+                options.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+            });
 
             app.UseRouting();
 

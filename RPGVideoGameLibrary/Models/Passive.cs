@@ -9,13 +9,13 @@ namespace RPGVideoGameLibrary.Models
     {
         public Passive()
         {
-            CharactersPassives = new HashSet<CharactersPassife>();
+            CharactersPassives = new HashSet<CharactersPassive>();
         }
 
         public string PassiveName { get; set; }
         public string Description { get; set; }
         public string Effect { get; set; }
 
-        public virtual ICollection<CharactersPassife> CharactersPassives { get; set; }
+        public virtual ICollection<CharactersPassive> CharactersPassives { get; set; }
     }
 }
