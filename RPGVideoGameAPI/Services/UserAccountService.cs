@@ -35,8 +35,8 @@ namespace RPGVideoGameAPI.Services
         {
             Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Profiles.Select(p => new { p.Uid, p.Name, p.Email }).ToList);
             task.Start();
-            IEnumerable<object> ProfileList = await task;
-            return ProfileList;
+            IEnumerable<object> profileList = await task;
+            return profileList;
         }
 
 

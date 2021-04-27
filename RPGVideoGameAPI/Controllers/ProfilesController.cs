@@ -34,8 +34,6 @@ namespace RPGVideoGameAPI.Controllers
 
         #region Http
 
-        #region Profile
-
         [HttpGet]
         public async Task<IEnumerable<object>> GetAllProfiles()
         {
@@ -84,7 +82,7 @@ namespace RPGVideoGameAPI.Controllers
         }
 
         
-        #endregion
+        
 
     }
 }
