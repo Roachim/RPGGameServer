@@ -35,6 +35,7 @@ namespace RPGVideoGameAPI
 
             services.AddSingleton<OnlineRPGContext>();
             services.AddSingleton<UserAccountService>();
+            services.AddSingleton<AdminService>();
 
             services.AddCors();
         }
