@@ -26,6 +26,13 @@ namespace RPGVideoGameAPI.Services
         #endregion
 
         #region Methods
+
+        #region Profiles
+
+        
+
+        
+
         /// <summary>
         /// Method for getting all profiles in the database
         /// getting only their id, name and email
@@ -94,19 +101,97 @@ namespace RPGVideoGameAPI.Services
             return $"Deleted profile for {profile.Name} with the email {profile.Email}";
         }
 
+        #endregion
+
+        #region Characters
 
 
         /// <summary>
-        /// 
+        /// Method for getting all Characters in the database
+        /// </summary>
+        /// <returns>List of objects</returns>
+        public async Task<IEnumerable<object>> GetAllCharacters()
+        {
+            Task<IEnumerable<object>> task = new Task<IEnumerable<object>>
+                (_context.Characters.Select(c => new 
+                { c.CharacterId, c.CharacterName, c.Hp, c.Atk, c.Def, c.Uid, c.Head, c.Chest, c.Hands, c.Legs, c.Feet, c.LeftHand, c.RightHand }).ToList);
+            task.Start();
+            IEnumerable<object> charactersList = await task;
+            return charactersList;
+        }
+
+
+        /// <summary>
+        /// Get single Character
+        /// </summary>
+        /// <param name="characterId"></param>
+        /// <returns>single object</returns>
+        public async Task<object> GetCharacter(int characterId)
+        {
+            Character character = await _context.Characters.FindAsync(characterId);
+
+            return new { character.CharacterId, 
+                character.CharacterName, 
+                character.Hp, 
+                character.Atk, 
+                character.Def,
+                character.Uid,
+                character.Head, 
+                character.Chest,
+                character.Hands,
+                character.Legs,
+                character.Feet,
+                character.LeftHand,
+                character.RightHand };
+        }
+
+
+        /// <summary>
+        /// Post a new character to the database
         /// </summary>
         /// <param name="character"></param>
-        /// <returns></returns>
+        /// <returns>string with name and email of new profile</returns>
         public async Task<string> AddNewCharacter(Character character)
         {
             _context.Characters.Add(character);
             await _context.SaveChangesAsync();
-            return $"Create character {character.CharacterName}";
+            return $"Created character {character.CharacterName} on the profile {character.Uid}";
         }
+
+        public async Task<string> UpdateCharacter(Character character)
+        {
+            Profile exist = await _context.Profiles.FindAsync(character.Uid);
+            if (exist == null) { return "No character found"; }
+
+            _context.ChangeTracker.Clear();
+            _context.Characters.Update(character);
+            await _context.SaveChangesAsync();
+            return "character updated ";
+
+        }
+
+
+        /// <summary>
+        /// Deletes a single character from database if found
+        /// </summary>
+        /// <param name="characterId"></param>
+        /// <returns>string telling whether or not character was deleted</returns>
+        public async Task<string> DeleteCharacter(int characterId)
+        {
+
+            Character character = await _context.Characters.FindAsync(characterId);
+
+            if (character == null) { return "No character found"; }
+
+            _context.Characters.Remove(character);
+            await _context.SaveChangesAsync();
+            return $"Deleted character {character.CharacterName}, id={character.Uid}";
+        }
+
+
+        #endregion
+
+        
 
         /// <summary>
         /// no

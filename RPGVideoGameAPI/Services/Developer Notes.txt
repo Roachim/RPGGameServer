@@ -1,0 +1,5 @@
+﻿
+------------------------------------------------UserAccountService-----------------------------------------------
+
+- GetAllCharacters() method: maybe change to group characters into individual groups based on which profile they belong to(say by UID, as an example)
+
