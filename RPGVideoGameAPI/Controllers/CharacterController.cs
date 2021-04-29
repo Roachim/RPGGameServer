@@ -47,7 +47,7 @@ namespace RPGVideoGameAPI.Controllers
         }
 
         [HttpPost]
-        [Route("Createcharacter")]
+        [Route("CreateCharacter")]
         public async Task<string> AddNewCharacter([FromBody] Character character)
         {
             return await _userAccountService.AddNewCharacter(character);
