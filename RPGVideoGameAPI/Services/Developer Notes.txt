@@ -2,4 +2,10 @@
 ------------------------------------------------UserAccountService-----------------------------------------------
 
 - GetAllCharacters() method: maybe change to group characters into individual groups based on which profile they belong to(say by UID, as an example)
+ 
+- Items, passives and skills that are in the join table, must first be deleted form the join table, before they can be deleted from the database.
+- Items
+- skills
+- Passives
+
 
