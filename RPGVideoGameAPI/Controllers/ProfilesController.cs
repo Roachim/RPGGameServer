@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -75,10 +76,10 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpPut]
         [Route("ChangeEquipment")]
-        public async Task<string> ChangeEquipment([FromBody] Character character, [FromQuery] short EquipmentId)
+        public async Task<string> ChangeEquipment([FromQuery]int characterId, [FromQuery] short equipmentId)
         {
 
-            return await _userAccountService.ChangeEquipment(character, EquipmentId);
+            return await _userAccountService.ChangeEquipment(characterId, equipmentId);
         }
 
         

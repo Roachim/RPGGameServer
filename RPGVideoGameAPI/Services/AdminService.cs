@@ -12,7 +12,7 @@ namespace RPGVideoGameAPI.Services
     /// <summary>
     /// Getting and managing items, equipment, skills, etc. 
     /// Used to add, delete, edit, etc. new things to the game.
-    /// Example: Adding new boots, new skills, deleting existing items such as potions, etc. But not remove them from a specific player.
+    /// Example: Adding new boots, new skills, deleting existing items such as potions, etc. But not remove them from one specific player.
     /// </summary>
     public class AdminService
     {
@@ -259,6 +259,7 @@ namespace RPGVideoGameAPI.Services
         /// <returns>string telling whether or not passive was deleted</returns>
         public async Task<string> DeletePassive(string passiveName)
         {
+            //delete from join table
             foreach (var i in _context.CharactersPassives)
             {
                 if (i.PassiveName != passiveName)
@@ -294,6 +295,24 @@ namespace RPGVideoGameAPI.Services
             task.Start();
             IEnumerable<object> equipmentList = await task;
             return equipmentList;
+        }
+
+        public async Task<IEnumerable<object>> GetEquipmentByType(string equipmentType)
+        {
+            //Find the numberIndex in EquipmentType table corresponding to the string equipmentType from the parameter
+            //Select all equipment from equipment table that has the given Index in their equipmentType
+            //Return list with all the equipment found
+
+            //replace with async?
+            EquipmentType type =  await _context.EquipmentTypes.FirstOrDefaultAsync(e => e.Name == equipmentType);
+            short index = type.EquipmentTypeId;
+            
+
+            Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Equipment
+                .Select(e => new { e.EquipmentId, e.Name, e.EquipmentType, e.Description, e.Hp, e.Atk, e.Def }).Where(t => t.EquipmentType ==index).ToList);
+
+            task.Start();
+                return await task;
         }
 
         /// <summary>

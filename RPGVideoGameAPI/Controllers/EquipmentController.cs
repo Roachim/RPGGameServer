@@ -8,6 +8,7 @@ using RPGVideoGameLibrary.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
+
 namespace RPGVideoGameAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -38,6 +39,15 @@ namespace RPGVideoGameAPI.Controllers
         public async Task<IEnumerable<object>> GetAllEquipment()
         {
             return await _adminService.GetAllEquipment();
+        }
+
+        //private enum EquipmentType { Head, Chest, Hands, Legs, Feet, RightHand, LeftHand }
+        //make new GET() for getting all equipment matching specific type: example boots.--------------------------------------------<=
+        [HttpGet]
+        [Route("ByType")]
+        public async Task<IEnumerable<object>> GetEquipmentByType([FromQuery] string equipmentType)
+        {
+            return await  _adminService.GetEquipmentByType(equipmentType);
         }
 
         [HttpGet]

@@ -120,7 +120,6 @@ namespace RPGVideoGameAPI.Services
             return charactersList;
         }
 
-
         /// <summary>
         /// Get single Character
         /// </summary>
@@ -145,7 +144,6 @@ namespace RPGVideoGameAPI.Services
                 character.RightHand };
         }
 
-
         /// <summary>
         /// Post a new character to the database
         /// </summary>
@@ -158,18 +156,24 @@ namespace RPGVideoGameAPI.Services
             return $"Created character {character.CharacterName} on the profile {character.Uid}";
         }
 
+        /// <summary>
+        /// Updates character in database with new character that matches the id.
+        /// </summary>
+        /// <param name="character"></param>
+        /// <returns></returns>
         public async Task<string> UpdateCharacter(Character character)
         {
+            //check if character exist in database
             Profile exist = await _context.Profiles.FindAsync(character.Uid);
             if (exist == null) { return "No character found"; }
 
+            //clear tracker and update character before returning message
             _context.ChangeTracker.Clear();
             _context.Characters.Update(character);
             await _context.SaveChangesAsync();
             return "character updated ";
 
         }
-
 
         /// <summary>
         /// Deletes a single character from database if found
@@ -194,18 +198,52 @@ namespace RPGVideoGameAPI.Services
         
 
         /// <summary>
-        /// no
+        /// Input characterId and equipmentId.
+        /// When changing equipment on a player:
+        /// - check whether the type on equipment matches the slot on the player trying to equip it on: return bad request if not.
+        /// 
         /// </summary>
-        /// <param name="character"></param>
+        /// <param name="characterId"></param>
         /// <param name="equipmentId"></param>
         /// <returns></returns>
-        public async Task<string> ChangeEquipment(Character character, short equipmentId)
+        public async Task<string> ChangeEquipment(int characterId, short equipmentId)
         {
-            Equipment equipment = await GetEquipment(equipmentId);
-            //character.Legs = equipmentId;
+            //get the character
+            //get the equipment
+            //get the equipment Type
+            //check the equipment type via the equipment type table
+            //find the corresponding slot on the character
+            //put equipment in corresponding slot
+            //override the database character with new updated character
+            //save changes
+            //if successful: return message showing name of character, equipment name and where it was equipped on character.
+
+            Character character = await _context.Characters.FindAsync(characterId);
+            Equipment equipment = await _context.Equipment.FindAsync(equipmentId);
+            EquipmentType type = await _context.EquipmentTypes.FindAsync(equipment.EquipmentType);
+
+            //insert equipment into correct slot
+            if (type.Name == "Chest")
+                character.Chest = equipment.EquipmentId;
+            if (type.Name == "Hands")
+                character.Hands = equipment.EquipmentId;
+            if (type.Name == "Head")
+                character.Head = equipment.EquipmentId;
+            if (type.Name == "Feet")
+                character.Feet = equipment.EquipmentId;
+            if (type.Name == "Legs")
+                character.Legs = equipment.EquipmentId;
+            if (type.Name == "Left_Hand")
+                character.LeftHand = equipment.EquipmentId;
+            if (type.Name == "Right_Hand")
+                character.RightHand = equipment.EquipmentId;
+
+            //update character in database
             _context.Characters.Update(character);
             await _context.SaveChangesAsync();
-            return $"{character.CharacterName} put on {equipment.Name}";
+
+            //return message
+            return $"Character {character.CharacterName} has equipped {equipment.Name} on their {type.Name}";
         }
 
         /// <summary>
