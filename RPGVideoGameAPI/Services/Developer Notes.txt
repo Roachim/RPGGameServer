@@ -9,4 +9,8 @@
 - Passives
 - Currently implemeted, but perhaps change the current method with concast.
 
-
+Additional features to add:
+- Add items to inventories
+- Give characters passives
+- Give characters skills
+- Add inventories to new characters when created

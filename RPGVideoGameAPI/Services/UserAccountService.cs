@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using RPGVideoGameLibrary.Models;
 
@@ -28,8 +29,6 @@ namespace RPGVideoGameAPI.Services
         #region Methods
 
         #region Profiles
-
-        
 
         
 
@@ -195,7 +194,44 @@ namespace RPGVideoGameAPI.Services
 
         #endregion
 
-        
+        public async Task<string> AddItemsToInventory(IEnumerable<InventoryItem> list)
+        {
+            //Should many different items be insertable, or should several of a single item be insertable?
+            //we can assume that the character id is the same as the id of the inventory that belong to them
+            //Is there any way we can be sure though?
+            //When a character is deleted their inventory should also get deleted
+
+            string items = "";
+            string characters = "";
+            
+            //If the item in that inventory already exists. Update the number instead, adding the unto the current amount with the new amount.
+            foreach (var ii in list)
+            {
+                InventoryItem invItem = await _context.InventoryItems.FindAsync(ii.InventoryId, ii.ItemName);
+                if (invItem != null)
+                {
+                    invItem.Quantity = invItem.Quantity + ii.Quantity;
+                    _context.InventoryItems.Update(invItem);
+                }
+                else
+                {
+                    _context.InventoryItems.Add(ii);
+                }
+                await _context.SaveChangesAsync();
+
+                items += ii.ItemName + ", ";
+                Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Characters
+                    .Select(c => new {c.CharacterName, c.CharacterId}).Where(e => e.CharacterId == ii.InventoryId).ToList);
+                task.Start();
+                characters += RemoveDump(task.Result.First().ToString()) + ", ";
+
+                
+            }
+
+            //Reminder: Change items and character string to remove the last comma
+
+            return $"The items {items} has been moved to the respective inventory for {characters}";
+        }
 
         /// <summary>
         /// Input characterId and equipmentId.
@@ -246,15 +282,26 @@ namespace RPGVideoGameAPI.Services
             return $"Character {character.CharacterName} has equipped {equipment.Name} on their {type.Name}";
         }
 
+
+        #region HelpMethods
         /// <summary>
-        /// Get a single equipment
+        /// Specifically made to get a clearer string from characters in addItemsToInventory¨'
+        /// Currently does not help at all
         /// </summary>
-        /// <param name="equipmentId"></param>
-        /// <returns>equipment object</returns>
-        public async Task<Equipment> GetEquipment(short equipmentId)
+        /// <param name="s"></param>
+        /// <returns></returns>
+        private string RemoveDump(string s)
         {
-            return await _context.Equipment.FindAsync(equipmentId);
+            //s = Regex.Replace(s, @"[\d]", String.Empty);
+            s = s.Substring(18);
+
+            string[] r = s.Split(',');
+            return r[0];
         }
+
+        #endregion
+
+
         #endregion
 
 

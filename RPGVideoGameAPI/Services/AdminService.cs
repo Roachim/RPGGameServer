@@ -302,8 +302,7 @@ namespace RPGVideoGameAPI.Services
             //Find the numberIndex in EquipmentType table corresponding to the string equipmentType from the parameter
             //Select all equipment from equipment table that has the given Index in their equipmentType
             //Return list with all the equipment found
-
-            //replace with async?
+            
             EquipmentType type =  await _context.EquipmentTypes.FirstOrDefaultAsync(e => e.Name == equipmentType);
             short index = type.EquipmentTypeId;
             
