@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using RPGVideoGameLibrary.Models;
 
@@ -28,8 +29,6 @@ namespace RPGVideoGameAPI.Services
         #region Methods
 
         #region Profiles
-
-        
 
         
 
@@ -120,7 +119,6 @@ namespace RPGVideoGameAPI.Services
             return charactersList;
         }
 
-
         /// <summary>
         /// Get single Character
         /// </summary>
@@ -145,7 +143,6 @@ namespace RPGVideoGameAPI.Services
                 character.RightHand };
         }
 
-
         /// <summary>
         /// Post a new character to the database
         /// </summary>
@@ -158,18 +155,24 @@ namespace RPGVideoGameAPI.Services
             return $"Created character {character.CharacterName} on the profile {character.Uid}";
         }
 
+        /// <summary>
+        /// Updates character in database with new character that matches the id.
+        /// </summary>
+        /// <param name="character"></param>
+        /// <returns></returns>
         public async Task<string> UpdateCharacter(Character character)
         {
+            //check if character exist in database
             Profile exist = await _context.Profiles.FindAsync(character.Uid);
             if (exist == null) { return "No character found"; }
 
+            //clear tracker and update character before returning message
             _context.ChangeTracker.Clear();
             _context.Characters.Update(character);
             await _context.SaveChangesAsync();
             return "character updated ";
 
         }
-
 
         /// <summary>
         /// Deletes a single character from database if found
@@ -191,32 +194,114 @@ namespace RPGVideoGameAPI.Services
 
         #endregion
 
-        
+        public async Task<string> AddItemsToInventory(IEnumerable<InventoryItem> list)
+        {
+            //Should many different items be insertable, or should several of a single item be insertable?
+            //we can assume that the character id is the same as the id of the inventory that belong to them
+            //Is there any way we can be sure though?
+            //When a character is deleted their inventory should also get deleted
+
+            string items = "";
+            string characters = "";
+            
+            //If the item in that inventory already exists. Update the number instead, adding the unto the current amount with the new amount.
+            foreach (var ii in list)
+            {
+                InventoryItem invItem = await _context.InventoryItems.FindAsync(ii.InventoryId, ii.ItemName);
+                if (invItem != null)
+                {
+                    invItem.Quantity = invItem.Quantity + ii.Quantity;
+                    _context.InventoryItems.Update(invItem);
+                }
+                else
+                {
+                    _context.InventoryItems.Add(ii);
+                }
+                await _context.SaveChangesAsync();
+
+                items += ii.ItemName + ", ";
+                Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Characters
+                    .Select(c => new {c.CharacterName, c.CharacterId}).Where(e => e.CharacterId == ii.InventoryId).ToList);
+                task.Start();
+                characters += RemoveDump(task.Result.First().ToString()) + ", ";
+
+                
+            }
+
+            //Reminder: Change items and character string to remove the last comma
+
+            return $"The items {items} has been moved to the respective inventory for {characters}";
+        }
 
         /// <summary>
-        /// no
+        /// Input characterId and equipmentId.
+        /// When changing equipment on a player:
+        /// - check whether the type on equipment matches the slot on the player trying to equip it on: return bad request if not.
+        /// 
         /// </summary>
-        /// <param name="character"></param>
+        /// <param name="characterId"></param>
         /// <param name="equipmentId"></param>
         /// <returns></returns>
-        public async Task<string> ChangeEquipment(Character character, short equipmentId)
+        public async Task<string> ChangeEquipment(int characterId, short equipmentId)
         {
-            Equipment equipment = await GetEquipment(equipmentId);
-            //character.Legs = equipmentId;
+            //get the character
+            //get the equipment
+            //get the equipment Type
+            //check the equipment type via the equipment type table
+            //find the corresponding slot on the character
+            //put equipment in corresponding slot
+            //override the database character with new updated character
+            //save changes
+            //if successful: return message showing name of character, equipment name and where it was equipped on character.
+
+            Character character = await _context.Characters.FindAsync(characterId);
+            Equipment equipment = await _context.Equipment.FindAsync(equipmentId);
+            EquipmentType type = await _context.EquipmentTypes.FindAsync(equipment.EquipmentType);
+
+            //insert equipment into correct slot
+            if (type.Name == "Chest")
+                character.Chest = equipment.EquipmentId;
+            if (type.Name == "Hands")
+                character.Hands = equipment.EquipmentId;
+            if (type.Name == "Head")
+                character.Head = equipment.EquipmentId;
+            if (type.Name == "Feet")
+                character.Feet = equipment.EquipmentId;
+            if (type.Name == "Legs")
+                character.Legs = equipment.EquipmentId;
+            if (type.Name == "Left_Hand")
+                character.LeftHand = equipment.EquipmentId;
+            if (type.Name == "Right_Hand")
+                character.RightHand = equipment.EquipmentId;
+
+            //update character in database
             _context.Characters.Update(character);
             await _context.SaveChangesAsync();
-            return $"{character.CharacterName} put on {equipment.Name}";
+
+            //return message
+            return $"Character {character.CharacterName} has equipped {equipment.Name} on their {type.Name}";
         }
 
+
+        #region HelpMethods
         /// <summary>
-        /// Get a single equipment
+        /// Specifically made to get a clearer string from characters in addItemsToInventory¨'
+        /// Currently does not help at all
         /// </summary>
-        /// <param name="equipmentId"></param>
-        /// <returns>equipment object</returns>
-        public async Task<Equipment> GetEquipment(short equipmentId)
+        /// <param name="s"></param>
+        /// <returns></returns>
+        private string RemoveDump(string s)
         {
-            return await _context.Equipment.FindAsync(equipmentId);
+            //s = Regex.Replace(s, @"[\d]", String.Empty);
+            s = s.Substring(18);
+
+            string[] r = s.Split(',');
+            return r[0];
         }
+
+        #endregion
+
+
         #endregion
 
 

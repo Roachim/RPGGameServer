@@ -68,6 +68,12 @@ namespace RPGVideoGameAPI.Controllers
             return await _userAccountService.DeleteCharacter(characterId);
         }
 
+        [HttpPost]
+        [Route("AddItemToInventory")]
+        public async Task<string> AddItemToInventory([FromBody]IEnumerable<InventoryItem> list)
+        {
+            return await _userAccountService.AddItemsToInventory(list);
+        }
 
         #endregion
     }

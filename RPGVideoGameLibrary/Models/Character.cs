@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 #nullable disable
 
@@ -38,5 +39,10 @@ namespace RPGVideoGameLibrary.Models
         public virtual Inventory Inventory { get; set; }
         public virtual ICollection<CharactersPassive> CharactersPassives { get; set; }
         public virtual ICollection<CharactersSkill> CharactersSkills { get; set; }
+
+        public static explicit operator Character(Task<object> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
