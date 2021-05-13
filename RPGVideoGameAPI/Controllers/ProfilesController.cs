@@ -21,7 +21,6 @@ namespace RPGVideoGameAPI.Controllers
         
         private readonly UserAccountService _userAccountService;
 
-
         #endregion
         #region Constructor
 
@@ -40,8 +39,7 @@ namespace RPGVideoGameAPI.Controllers
         {
             return await _userAccountService.GetAllProfiles();
         }
-        //_context.Profiles.Select(p => new { p.Name, Characters = p.Characters.Select(c => new { c.CharacterName }) });
-
+        
         [HttpGet]
         [Route("{profileId}")]
         public async Task<object> OneProfile(int profileId)
@@ -82,8 +80,8 @@ namespace RPGVideoGameAPI.Controllers
             return await _userAccountService.ChangeEquipment(characterId, equipmentId);
         }
 
-        
-        
+
+        //_context.Profiles.Select(p => new { p.Name, Characters = p.Characters.Select(c => new { c.CharacterName }) });
 
     }
 }

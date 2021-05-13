@@ -242,17 +242,18 @@ namespace RPGVideoGameAPI.Services
         /// <param name="characterId"></param>
         /// <param name="equipmentId"></param>
         /// <returns></returns>
+        /// <remarks>//get the character
+        /// //get the equipment
+        /// //get the equipment Type
+        /// //check the equipment type via the equipment type table
+        /// //find the corresponding slot on the character
+        /// //put equipment in corresponding slot
+        /// //override the database character with new updated character
+        /// //save changes
+        /// //if successful: return message showing name of character, equipment name and where it was equipped on character.</remarks>
         public async Task<string> ChangeEquipment(int characterId, short equipmentId)
         {
-            //get the character
-            //get the equipment
-            //get the equipment Type
-            //check the equipment type via the equipment type table
-            //find the corresponding slot on the character
-            //put equipment in corresponding slot
-            //override the database character with new updated character
-            //save changes
-            //if successful: return message showing name of character, equipment name and where it was equipped on character.
+            
 
             Character character = await _context.Characters.FindAsync(characterId);
             Equipment equipment = await _context.Equipment.FindAsync(equipmentId);
