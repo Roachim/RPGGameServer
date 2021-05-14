@@ -8,8 +8,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 //using RPGVideoGameAPI.Data;
 using RPGVideoGameLibrary.Models;
 using RPGVideoGameAPI.Services;
@@ -36,6 +40,29 @@ namespace RPGVideoGameAPI
             services.AddSingleton<OnlineRPGContext>();
             services.AddSingleton<UserAccountService>();
             services.AddSingleton<AdminService>();
+            services.AddScoped<AuthService>();
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        new SHA256Managed().ComputeHash(
+                            Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT_Secret")))),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    RequireExpirationTime = false,
+                    ValidateLifetime = true
+                };
+            });
+
 
             services.AddCors();
         }
@@ -54,6 +81,9 @@ namespace RPGVideoGameAPI
             });
 
             app.UseRouting();
+
+            //Use when Passwords in DB have been Encrypted
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using RPGVideoGameAPI.Services;
 using RPGVideoGameLibrary.Models;
 
@@ -34,6 +35,7 @@ namespace RPGVideoGameAPI.Controllers
         #region Http
 
         [HttpGet]
+        //[Authorize]
         public async Task<IEnumerable<object>> GetAllCharacters()
         {
             return await _userAccountService.GetAllCharacters();

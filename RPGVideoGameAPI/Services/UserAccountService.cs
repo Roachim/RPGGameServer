@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using RPGVideoGameAPI.Cryptography;
 using RPGVideoGameLibrary.Models;
 
 namespace RPGVideoGameAPI.Services
@@ -65,7 +66,8 @@ namespace RPGVideoGameAPI.Services
         /// <returns>string with name and email of new profile</returns>
         public async Task<string> AddNewProfile(Profile profile)
         {
-            _context.Profiles.Add(profile);
+            profile.Password = Crypt.Encrypt(profile.Password);
+            await _context.Profiles.AddAsync(profile);
             await _context.SaveChangesAsync();
             return $"Created profile {profile.Name} with the email {profile.Email}";
         }
@@ -74,6 +76,8 @@ namespace RPGVideoGameAPI.Services
         {
             Profile exist = await _context.Profiles.FindAsync(profile.Uid);
             if (exist == null) { return "No profile found"; }
+
+            profile.Password = Crypt.Encrypt(profile.Password);
 
             _context.ChangeTracker.Clear();
             _context.Profiles.Update(profile);
@@ -215,7 +219,7 @@ namespace RPGVideoGameAPI.Services
                 }
                 else
                 {
-                    _context.InventoryItems.Add(ii);
+                    await _context.InventoryItems.AddAsync(ii);
                 }
                 await _context.SaveChangesAsync();
 
