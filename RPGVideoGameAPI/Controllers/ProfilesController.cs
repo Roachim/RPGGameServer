@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using RPGVideoGameAPI.Services;
 
 namespace RPGVideoGameAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProfilesController : ControllerBase
@@ -35,6 +37,7 @@ namespace RPGVideoGameAPI.Controllers
         #region Http
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IEnumerable<object>> GetAllProfiles()
         {
             return await _userAccountService.GetAllProfiles();
@@ -71,14 +74,6 @@ namespace RPGVideoGameAPI.Controllers
 
 
         #endregion
-
-        [HttpPut]
-        [Route("ChangeEquipment")]
-        public async Task<string> ChangeEquipment([FromQuery]int characterId, [FromQuery] short equipmentId)
-        {
-
-            return await _userAccountService.ChangeEquipment(characterId, equipmentId);
-        }
 
 
         //_context.Profiles.Select(p => new { p.Name, Characters = p.Characters.Select(c => new { c.CharacterName }) });

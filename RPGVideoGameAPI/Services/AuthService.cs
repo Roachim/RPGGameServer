@@ -58,7 +58,8 @@ namespace RPGVideoGameAPI.Services
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, profile.Uid.ToString()),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, profile.Email) 
+                    new Claim(JwtRegisteredClaimNames.Email, profile.Email),
+                    //new Claim(ClaimTypes.Role, profile.Role) ////OutComment When Roles have been implemented in the database
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

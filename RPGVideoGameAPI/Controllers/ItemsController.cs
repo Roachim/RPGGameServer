@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ using RPGVideoGameAPI.Services;
 
 namespace RPGVideoGameAPI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class ItemsController : ControllerBase
@@ -38,6 +40,7 @@ namespace RPGVideoGameAPI.Controllers
         #region Methods
 
         [HttpGet]
+        [Authorize]
         public async Task<IEnumerable<object>> GetAllItems()
         {
             return await _adminService.GetAllItems();
@@ -45,6 +48,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpGet]
         [Route("GetOne")]
+        [Authorize]
         public async Task<object> GetOneItem([FromQuery]string itemName)
         {
             return await _adminService.GetItem(itemName);

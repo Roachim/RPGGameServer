@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using RPGVideoGameAPI.Services;
 using RPGVideoGameLibrary.Models;
 
@@ -10,6 +11,7 @@ using RPGVideoGameLibrary.Models;
 
 namespace RPGVideoGameAPI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class SkillsController : ControllerBase
@@ -35,6 +37,7 @@ namespace RPGVideoGameAPI.Controllers
         #region Methods
 
         [HttpGet]
+        [Authorize]
         public async Task<IEnumerable<object>> GetAllSkills()
         {
             return await _adminService.GetAllSkills();
@@ -42,6 +45,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpGet]
         [Route("GetOne")]
+        [Authorize]
         public async Task<object> GetOneSkill([FromQuery] string skillName)
         {
             return await _adminService.GetSkill(skillName);
