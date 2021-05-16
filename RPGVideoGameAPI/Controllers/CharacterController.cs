@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using RPGVideoGameAPI.Services;
 using RPGVideoGameLibrary.Models;
 
@@ -10,6 +13,7 @@ using RPGVideoGameLibrary.Models;
 
 namespace RPGVideoGameAPI.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CharacterController : ControllerBase
@@ -34,8 +38,10 @@ namespace RPGVideoGameAPI.Controllers
         #region Http
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<IEnumerable<object>> GetAllCharacters()
         {
+
             return await _userAccountService.GetAllCharacters();
         }
 
@@ -73,6 +79,15 @@ namespace RPGVideoGameAPI.Controllers
         public async Task<string> AddItemToInventory([FromBody]IEnumerable<InventoryItem> list)
         {
             return await _userAccountService.AddItemsToInventory(list);
+        }
+
+
+        [HttpPut]
+        [Route("ChangeEquipment")]
+        public async Task<string> ChangeEquipment([FromQuery] int characterId, [FromQuery] short equipmentId)
+        {
+
+            return await _userAccountService.ChangeEquipment(characterId, equipmentId);
         }
 
         #endregion

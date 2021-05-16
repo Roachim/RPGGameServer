@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using RPGVideoGameAPI.Services;
 using RPGVideoGameLibrary.Models;
 
@@ -11,6 +12,7 @@ using RPGVideoGameLibrary.Models;
 
 namespace RPGVideoGameAPI.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class EquipmentController : ControllerBase
@@ -36,6 +38,7 @@ namespace RPGVideoGameAPI.Controllers
         #region Methods
 
         [HttpGet]
+        [Authorize]
         public async Task<IEnumerable<object>> GetAllEquipment()
         {
             return await _adminService.GetAllEquipment();
@@ -45,6 +48,7 @@ namespace RPGVideoGameAPI.Controllers
         //make new GET() for getting all equipment matching specific type: example boots.--------------------------------------------<=
         [HttpGet]
         [Route("ByType")]
+        [Authorize]
         public async Task<IEnumerable<object>> GetEquipmentByType([FromQuery] string equipmentType)
         {
             return await  _adminService.GetEquipmentByType(equipmentType);
@@ -52,6 +56,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpGet]
         [Route("{equipmentId}")]
+        [Authorize]
         public async Task<object> GetOneEquipment(short equipmentId)
         {
             return await _adminService.GetEquipment(equipmentId);
