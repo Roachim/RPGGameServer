@@ -48,11 +48,11 @@ namespace RPGVideoGameAPI
             services.AddSingleton<IRPGDatabaseSettings>
                 (sp => sp.GetRequiredService<IOptions<RPGDatabaseSettings>>().Value);
 
-            services.AddSingleton<MDBUserService>();
+            services.AddScoped<MDBUserService>();
 
-            services.AddSingleton<OnlineRPGContext>();
-            services.AddSingleton<UserAccountService>();
-            services.AddSingleton<AdminService>();
+            services.AddScoped<OnlineRPGContext>();
+            services.AddScoped<UserAccountService>();
+            services.AddScoped<AdminService>();
             services.AddScoped<AuthService>();
 
             services.AddAuthentication(options =>

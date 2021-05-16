@@ -41,14 +41,14 @@ namespace RPGVideoGameAPI.Services
             var profile =
                 await _context.Profiles.SingleOrDefaultAsync(p => p.Name == username && p.Password == encryptedPassword);
 
-            return profile == null ? new AuthenticationResult{Errors = new List<string>(){ "error occurred, incorrect user name or password" } } : GenerateToken(profile);
+            return profile == null ? new AuthenticationResult{Errors = new List<string>(){ "error occurred, incorrect user name or password" } } : await GenerateToken(profile);
         }
 
         #endregion
 
         #region HelpMethods
 
-        private AuthenticationResult GenerateToken(Profile profile)
+        private async Task<AuthenticationResult> GenerateToken(Profile profile)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = new SHA256Managed().ComputeHash(Encoding.ASCII.GetBytes(_jwtSecret));
@@ -59,7 +59,7 @@ namespace RPGVideoGameAPI.Services
                     new Claim(JwtRegisteredClaimNames.Sub, profile.Uid.ToString()),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Email, profile.Email),
-                    //new Claim(ClaimTypes.Role, profile.Role) ////OutComment When Roles have been implemented in the database
+                    new Claim(ClaimTypes.Role, await GetRole(profile.RoleId))
                 }),
                 Expires = DateTime.UtcNow.AddHours(2),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -72,6 +72,14 @@ namespace RPGVideoGameAPI.Services
                 Token = tokenHandler.WriteToken(token)
             };
         }
+
+
+        private async Task<string> GetRole(int roleId)
+        {
+            Role role = await _context.Roles.FirstAsync(r => r.RoleId == roleId);
+            return role.RoleName;
+        }
+
 
         #endregion
 

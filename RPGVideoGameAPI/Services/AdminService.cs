@@ -37,8 +37,8 @@ namespace RPGVideoGameAPI.Services
 
         public async Task<IEnumerable<object>> GetAllItems()
         {
-            Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Items
-                .Select(i => new {i.ItemName, i.Type, i.Effect, i.Description}).ToList);
+            Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Items.Join(_context.ItemTypes, item => item.TypeId, type => type.TypeId, (item, type) => new {item, type.Type})
+                .Select(i => new {i.item.ItemName, i.Type, i.item.Effect, i.item.Description}).ToList);
             task.Start();
             IEnumerable<object> itemList = await task;
             return itemList;
@@ -52,7 +52,8 @@ namespace RPGVideoGameAPI.Services
         public async Task<object> GetItem(string itemName)
         {
             Item item = await _context.Items.FindAsync(itemName);
-            return new {item.ItemName, item.Type, item.Effect, item.Description};
+            ItemType type = await _context.ItemTypes.FirstAsync(t => t.TypeId == item.TypeId);
+            return new {item.ItemName, type.Type, item.Effect, item.Description};
         }
 
 
@@ -63,7 +64,7 @@ namespace RPGVideoGameAPI.Services
         /// <returns>string with name of new item</returns>
         public async Task<string> AddNewItem(Item item)
         {
-            _context.Items.Add(item);
+            await _context.Items.AddAsync(item);
             await _context.SaveChangesAsync();
             return $"Created item {item.ItemName}";
         }
@@ -290,8 +291,8 @@ namespace RPGVideoGameAPI.Services
 
         public async Task<IEnumerable<object>> GetAllEquipment()
         {
-            Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Equipment
-                .Select(e => new { e.EquipmentId, e.Name, e.EquipmentType, e.Description, e.Hp, e.Atk, e.Def }).ToList);
+            Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Equipment.Join(_context.EquipmentTypes, equipment => equipment.EquipmentType, type => type.EquipmentTypeId, (equipment, type) => new {equipment, Type = type.Name})
+                .Select(e => new { e.equipment.EquipmentId, e.equipment.Name, e.Type, e.equipment.Description, e.equipment.Hp, e.equipment.Atk, e.equipment.Def }).ToList);
             task.Start();
             IEnumerable<object> equipmentList = await task;
             return equipmentList;
@@ -307,8 +308,8 @@ namespace RPGVideoGameAPI.Services
             short index = type.EquipmentTypeId;
             
 
-            Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Equipment
-                .Select(e => new { e.EquipmentId, e.Name, e.EquipmentType, e.Description, e.Hp, e.Atk, e.Def }).Where(t => t.EquipmentType ==index).ToList);
+            Task<IEnumerable<object>> task = new Task<IEnumerable<object>>(_context.Equipment.Join(_context.EquipmentTypes, equipment => equipment.EquipmentType, et => et.EquipmentTypeId, (equipment, et) => new {equipment, Type = et.Name})
+                .Select(e => new { e.equipment.EquipmentId, e.equipment.Name, e.Type, e.equipment.Description, e.equipment.Hp, e.equipment.Atk, e.equipment.Def }).Where(t => t.Type == equipmentType).ToList);
 
             task.Start();
                 return await task;
@@ -324,8 +325,10 @@ namespace RPGVideoGameAPI.Services
             Equipment equipment = await _context.Equipment.FindAsync(equipmentId);
             if (equipment == null)
                 return null;
-            
-            return new { equipment.EquipmentId, equipment.Name, equipment.EquipmentType, equipment.Description, equipment.Hp, equipment.Atk, equipment.Def };
+
+            EquipmentType type = await _context.EquipmentTypes.FindAsync(equipment.EquipmentType);
+
+            return new { equipment.EquipmentId, equipment.Name, Type = type.Name, equipment.Description, equipment.Hp, equipment.Atk, equipment.Def };
         }
 
 

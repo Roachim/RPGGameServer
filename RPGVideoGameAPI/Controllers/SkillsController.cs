@@ -11,7 +11,7 @@ using RPGVideoGameLibrary.Models;
 
 namespace RPGVideoGameAPI.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class SkillsController : ControllerBase
@@ -37,7 +37,6 @@ namespace RPGVideoGameAPI.Controllers
         #region Methods
 
         [HttpGet]
-        [Authorize]
         public async Task<IEnumerable<object>> GetAllSkills()
         {
             return await _adminService.GetAllSkills();
@@ -45,7 +44,6 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpGet]
         [Route("GetOne")]
-        [Authorize]
         public async Task<object> GetOneSkill([FromQuery] string skillName)
         {
             return await _adminService.GetSkill(skillName);
@@ -53,6 +51,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpPost]
         [Route("CreateSkill")]
+        [Authorize(Roles = "Admin")]
         public async Task<string> AddNewSkill([FromBody] Skill skill)
         {
             return await _adminService.AddNewSkill(skill);
@@ -60,6 +59,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpPut]
         [Route("UpdateSkill")]
+        [Authorize(Roles = "Admin")]
         public async Task<string> UpdateSkill([FromBody] Skill skill)
         {
             return await _adminService.UpdateSkill(skill);
@@ -68,6 +68,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteSkill")]
+        [Authorize(Roles = "Admin")]
         public async Task<string> DeleteSkill([FromQuery] string skillName)
         {
             return await _adminService.DeleteSkill(skillName);

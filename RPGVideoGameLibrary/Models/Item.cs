@@ -13,10 +13,11 @@ namespace RPGVideoGameLibrary.Models
         }
 
         public string ItemName { get; set; }
-        public string Type { get; set; }
+        public byte TypeId { get; set; }
         public string Description { get; set; }
         public string Effect { get; set; }
 
+        public virtual ItemType Type { get; set; }
         public virtual ICollection<InventoryItem> InventoryItems { get; set; }
     }
 }

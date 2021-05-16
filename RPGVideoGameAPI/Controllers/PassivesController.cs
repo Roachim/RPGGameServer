@@ -11,7 +11,7 @@ using RPGVideoGameLibrary.Models;
 
 namespace RPGVideoGameAPI.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PassivesController : ControllerBase
@@ -37,7 +37,6 @@ namespace RPGVideoGameAPI.Controllers
         #region Methods
 
         [HttpGet]
-        [Authorize]
         public async Task<IEnumerable<object>> GetAllPassive()
         {
             return await _adminService.GetAllPassives();
@@ -45,7 +44,6 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpGet]
         [Route("GetOne")]
-        [Authorize]
         public async Task<object> GetOnePassive([FromQuery] string passiveName)
         {
             return await _adminService.GetPassive(passiveName);
@@ -53,6 +51,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpPost]
         [Route("CreatePassive")]
+        [Authorize(Roles = "Admin")]
         public async Task<string> AddNewPassive([FromBody] Passive passive)
         {
             return await _adminService.AddNewPassive(passive);
@@ -60,6 +59,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpPut]
         [Route("UpdatePassive")]
+        [Authorize(Roles = "Admin")]
         public async Task<string> UpdatePassive([FromBody] Passive passive)
         {
             return await _adminService.UpdatePassive(passive);
@@ -68,6 +68,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpDelete]
         [Route("DeletePassive")]
+        [Authorize(Roles = "Admin")]
         public async Task<string> DeletePassive([FromQuery] string passiveName)
         {
             return await _adminService.DeletePassive(passiveName);

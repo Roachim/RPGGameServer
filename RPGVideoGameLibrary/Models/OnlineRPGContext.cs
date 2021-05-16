@@ -19,7 +19,7 @@ namespace RPGVideoGameLibrary.Models
 
         public virtual DbSet<Character> Characters { get; set; }
         public virtual DbSet<CharacterSkill> CharacterSkills { get; set; }
-        public virtual DbSet<CharactersPassive> CharactersPassives { get; set; }
+        public virtual DbSet<CharactersPassife> CharactersPassives { get; set; }
         public virtual DbSet<CharactersSkill> CharactersSkills { get; set; }
         public virtual DbSet<Equipment> Equipment { get; set; }
         public virtual DbSet<EquipmentType> EquipmentTypes { get; set; }
@@ -27,8 +27,10 @@ namespace RPGVideoGameLibrary.Models
         public virtual DbSet<InventoryEquipment> InventoryEquipments { get; set; }
         public virtual DbSet<InventoryItem> InventoryItems { get; set; }
         public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<ItemType> ItemTypes { get; set; }
         public virtual DbSet<Passive> Passives { get; set; }
         public virtual DbSet<Profile> Profiles { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Skill> Skills { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -36,7 +38,7 @@ namespace RPGVideoGameLibrary.Models
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=OnlineRPG;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=OnlineRPG;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
             }
         }
 
@@ -64,43 +66,43 @@ namespace RPGVideoGameLibrary.Models
                 entity.HasOne(d => d.ChestNavigation)
                     .WithMany(p => p.CharacterChestNavigations)
                     .HasForeignKey(d => d.Chest)
-                    .HasConstraintName("FK__Character__Chest__34C8D9D1");
+                    .HasConstraintName("FK__Character__Chest__3A81B327");
 
                 entity.HasOne(d => d.FeetNavigation)
                     .WithMany(p => p.CharacterFeetNavigations)
                     .HasForeignKey(d => d.Feet)
-                    .HasConstraintName("FK__Characters__Feet__37A5467C");
+                    .HasConstraintName("FK__Characters__Feet__3D5E1FD2");
 
                 entity.HasOne(d => d.HandsNavigation)
                     .WithMany(p => p.CharacterHandsNavigations)
                     .HasForeignKey(d => d.Hands)
-                    .HasConstraintName("FK__Character__Hands__35BCFE0A");
+                    .HasConstraintName("FK__Character__Hands__3B75D760");
 
                 entity.HasOne(d => d.HeadNavigation)
                     .WithMany(p => p.CharacterHeadNavigations)
                     .HasForeignKey(d => d.Head)
-                    .HasConstraintName("FK__Characters__Head__33D4B598");
+                    .HasConstraintName("FK__Characters__Head__398D8EEE");
 
                 entity.HasOne(d => d.LeftHandNavigation)
                     .WithMany(p => p.CharacterLeftHandNavigations)
                     .HasForeignKey(d => d.LeftHand)
-                    .HasConstraintName("FK__Character__Left___38996AB5");
+                    .HasConstraintName("FK__Character__Left___3E52440B");
 
                 entity.HasOne(d => d.LegsNavigation)
                     .WithMany(p => p.CharacterLegsNavigations)
                     .HasForeignKey(d => d.Legs)
-                    .HasConstraintName("FK__Characters__Legs__36B12243");
+                    .HasConstraintName("FK__Characters__Legs__3C69FB99");
 
                 entity.HasOne(d => d.RightHandNavigation)
                     .WithMany(p => p.CharacterRightHandNavigations)
                     .HasForeignKey(d => d.RightHand)
-                    .HasConstraintName("FK__Character__Right__398D8EEE");
+                    .HasConstraintName("FK__Character__Right__3F466844");
 
                 entity.HasOne(d => d.UidNavigation)
                     .WithMany(p => p.Characters)
                     .HasForeignKey(d => d.Uid)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Characters__UID__32E0915F");
+                    .HasConstraintName("FK__Characters__UID__38996AB5");
             });
 
             modelBuilder.Entity<CharacterSkill>(entity =>
@@ -122,10 +124,10 @@ namespace RPGVideoGameLibrary.Models
                     .HasColumnName("Skill_Name");
             });
 
-            modelBuilder.Entity<CharactersPassive>(entity =>
+            modelBuilder.Entity<CharactersPassife>(entity =>
             {
                 entity.HasKey(e => new { e.CharacterId, e.PassiveName })
-                    .HasName("PK__Characte__938C7154635F4204");
+                    .HasName("PK__Characte__938C7154DB75129B");
 
                 entity.ToTable("Characters_Passives");
 
@@ -139,19 +141,19 @@ namespace RPGVideoGameLibrary.Models
                     .WithMany(p => p.CharactersPassives)
                     .HasForeignKey(d => d.CharacterId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Character__Chara__46E78A0C");
+                    .HasConstraintName("FK__Character__Chara__4CA06362");
 
                 entity.HasOne(d => d.PassiveNameNavigation)
                     .WithMany(p => p.CharactersPassives)
                     .HasForeignKey(d => d.PassiveName)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Character__Passi__47DBAE45");
+                    .HasConstraintName("FK__Character__Passi__4D94879B");
             });
 
             modelBuilder.Entity<CharactersSkill>(entity =>
             {
                 entity.HasKey(e => new { e.CharacterId, e.SkillName })
-                    .HasName("PK__Characte__077172C782DA1B17");
+                    .HasName("PK__Characte__077172C7F4F68419");
 
                 entity.ToTable("Characters_Skills");
 
@@ -165,13 +167,13 @@ namespace RPGVideoGameLibrary.Models
                     .WithMany(p => p.CharactersSkills)
                     .HasForeignKey(d => d.CharacterId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Character__Chara__4AB81AF0");
+                    .HasConstraintName("FK__Character__Chara__5070F446");
 
                 entity.HasOne(d => d.SkillNameNavigation)
                     .WithMany(p => p.CharactersSkills)
                     .HasForeignKey(d => d.SkillName)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Character__Skill__4BAC3F29");
+                    .HasConstraintName("FK__Character__Skill__5165187F");
             });
 
             modelBuilder.Entity<Equipment>(entity =>
@@ -198,7 +200,7 @@ namespace RPGVideoGameLibrary.Models
                     .WithMany(p => p.Equipment)
                     .HasForeignKey(d => d.EquipmentType)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Equipment__Equip__300424B4");
+                    .HasConstraintName("FK__Equipment__Equip__35BCFE0A");
             });
 
             modelBuilder.Entity<EquipmentType>(entity =>
@@ -230,13 +232,13 @@ namespace RPGVideoGameLibrary.Models
                     .WithOne(p => p.Inventory)
                     .HasForeignKey<Inventory>(d => d.InventoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Inventory__Inven__3C69FB99");
+                    .HasConstraintName("FK__Inventory__Inven__4222D4EF");
             });
 
             modelBuilder.Entity<InventoryEquipment>(entity =>
             {
                 entity.HasKey(e => new { e.InventoryId, e.EquipmentId })
-                    .HasName("PK__Inventor__676AF355F12C51CB");
+                    .HasName("PK__Inventor__676AF355070C932A");
 
                 entity.ToTable("Inventory_Equipment");
 
@@ -248,19 +250,19 @@ namespace RPGVideoGameLibrary.Models
                     .WithMany(p => p.InventoryEquipments)
                     .HasForeignKey(d => d.EquipmentId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Inventory__Equip__440B1D61");
+                    .HasConstraintName("FK__Inventory__Equip__49C3F6B7");
 
                 entity.HasOne(d => d.Inventory)
                     .WithMany(p => p.InventoryEquipments)
                     .HasForeignKey(d => d.InventoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Inventory__Inven__4316F928");
+                    .HasConstraintName("FK__Inventory__Inven__48CFD27E");
             });
 
             modelBuilder.Entity<InventoryItem>(entity =>
             {
                 entity.HasKey(e => new { e.InventoryId, e.ItemName })
-                    .HasName("PK__Inventor__03F90BB581D6AAF5");
+                    .HasName("PK__Inventor__03F90BB5BE47E212");
 
                 entity.ToTable("Inventory_Items");
 
@@ -274,19 +276,19 @@ namespace RPGVideoGameLibrary.Models
                     .WithMany(p => p.InventoryItems)
                     .HasForeignKey(d => d.InventoryId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Inventory__Inven__3F466844");
+                    .HasConstraintName("FK__Inventory__Inven__44FF419A");
 
                 entity.HasOne(d => d.ItemNameNavigation)
                     .WithMany(p => p.InventoryItems)
                     .HasForeignKey(d => d.ItemName)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__Inventory__Item___403A8C7D");
+                    .HasConstraintName("FK__Inventory__Item___45F365D3");
             });
 
             modelBuilder.Entity<Item>(entity =>
             {
                 entity.HasKey(e => e.ItemName)
-                    .HasName("PK__Items__89CFF9E34090D1E0");
+                    .HasName("PK__Items__89CFF9E3EDBFCC00");
 
                 entity.Property(e => e.ItemName)
                     .HasMaxLength(30)
@@ -298,6 +300,26 @@ namespace RPGVideoGameLibrary.Models
                     .IsRequired()
                     .HasMaxLength(150);
 
+                entity.Property(e => e.TypeId).HasColumnName("Type_Id");
+
+                entity.HasOne(d => d.Type)
+                    .WithMany(p => p.Items)
+                    .HasForeignKey(d => d.TypeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Items__Type_Id__2E1BDC42");
+            });
+
+            modelBuilder.Entity<ItemType>(entity =>
+            {
+                entity.HasKey(e => e.TypeId)
+                    .HasName("PK__ItemType__FE90DD9EF9353E67");
+
+                entity.ToTable("ItemType");
+
+                entity.Property(e => e.TypeId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("Type_Id");
+
                 entity.Property(e => e.Type)
                     .IsRequired()
                     .HasMaxLength(15);
@@ -306,7 +328,7 @@ namespace RPGVideoGameLibrary.Models
             modelBuilder.Entity<Passive>(entity =>
             {
                 entity.HasKey(e => e.PassiveName)
-                    .HasName("PK__Passives__CED0D26D7F889660");
+                    .HasName("PK__Passives__CED0D26D44A7D892");
 
                 entity.Property(e => e.PassiveName)
                     .HasMaxLength(30)
@@ -322,7 +344,7 @@ namespace RPGVideoGameLibrary.Models
             modelBuilder.Entity<Profile>(entity =>
             {
                 entity.HasKey(e => e.Uid)
-                    .HasName("PK__Profiles__C5B196026CD8FE51");
+                    .HasName("PK__Profiles__C5B19602606B12D1");
 
                 entity.Property(e => e.Uid).HasColumnName("UID");
 
@@ -336,13 +358,34 @@ namespace RPGVideoGameLibrary.Models
 
                 entity.Property(e => e.Password)
                     .IsRequired()
-                    .HasMaxLength(16);
+                    .HasMaxLength(100);
+
+                entity.Property(e => e.RoleId).HasColumnName("Role_Id");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Profiles)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__Profiles__Role_I__25869641");
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.ToTable("Role");
+
+                entity.Property(e => e.RoleId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("Role_Id");
+
+                entity.Property(e => e.RoleName)
+                    .HasMaxLength(5)
+                    .HasColumnName("Role_Name");
             });
 
             modelBuilder.Entity<Skill>(entity =>
             {
                 entity.HasKey(e => e.SkillName)
-                    .HasName("PK__Skills__8100EB5448F3F745");
+                    .HasName("PK__Skills__8100EB54DBD3ED67");
 
                 entity.Property(e => e.SkillName)
                     .HasMaxLength(30)

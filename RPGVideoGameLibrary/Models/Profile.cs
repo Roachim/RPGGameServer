@@ -16,7 +16,9 @@ namespace RPGVideoGameLibrary.Models
         public string Name { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
+        public byte RoleId { get; set; }
 
+        public virtual Role Role { get; set; }
         public virtual ICollection<Character> Characters { get; set; }
     }
 }
