@@ -14,6 +14,7 @@
       "launchBrowser": true,
       "launchUrl": "api/Profiles",
       "environmentVariables": {
+        "RPGVideoGameMongoConnection": "mongodb+srv://Joachim:C1lwoOpwcu5YgYm7@cluster0.gfvi7.mongodb.net/RPGDB?retryWrites=true&w=majority",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
@@ -21,10 +22,11 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/Profiles",
-      "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
+        "RPGVideoGameMongoConnection": "mongodb+srv://Joachim:C1lwoOpwcu5YgYm7@cluster0.gfvi7.mongodb.net/RPGDB?retryWrites=true&w=majority",
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }
