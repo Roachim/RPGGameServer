@@ -38,15 +38,18 @@ namespace RPGVideoGameAPI
             //services.AddDbContext<RPGVideoGameAPIContext>(options =>
             //        options.UseSqlServer(Configuration.GetConnectionString("RPGVideoGameAPIContext")));
 
-            services.Configure<RPGDatabaseSettings>(Configuration.GetSection(nameof(RPGDatabaseSettings)));
+            services.Configure<RPGDatabaseSettings>
+                (Configuration.GetSection(nameof(RPGDatabaseSettings)));
 
-            services.AddSingleton<IRPGDatabaseSettings>(sp => sp.GetRequiredService<IOptions<RPGDatabaseSettings>>().Value);
+            services.AddSingleton<IRPGDatabaseSettings>
+                (sp => sp.GetRequiredService<IOptions<RPGDatabaseSettings>>().Value);
 
+            services.AddSingleton<MDBUserService>();
 
             services.AddSingleton<OnlineRPGContext>();
             services.AddSingleton<UserAccountService>();
             services.AddSingleton<AdminService>();
-            services.AddSingleton<MDBUserService>();
+            
 
             services.AddCors();
         }
