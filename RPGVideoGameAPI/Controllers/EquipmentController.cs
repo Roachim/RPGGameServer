@@ -12,7 +12,7 @@ using RPGVideoGameLibrary.Models;
 
 namespace RPGVideoGameAPI.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class EquipmentController : ControllerBase
@@ -38,7 +38,6 @@ namespace RPGVideoGameAPI.Controllers
         #region Methods
 
         [HttpGet]
-        [Authorize]
         public async Task<IEnumerable<object>> GetAllEquipment()
         {
             return await _adminService.GetAllEquipment();
@@ -48,7 +47,6 @@ namespace RPGVideoGameAPI.Controllers
         //make new GET() for getting all equipment matching specific type: example boots.--------------------------------------------<=
         [HttpGet]
         [Route("ByType")]
-        [Authorize]
         public async Task<IEnumerable<object>> GetEquipmentByType([FromQuery] string equipmentType)
         {
             return await  _adminService.GetEquipmentByType(equipmentType);
@@ -56,7 +54,6 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpGet]
         [Route("{equipmentId}")]
-        [Authorize]
         public async Task<object> GetOneEquipment(short equipmentId)
         {
             return await _adminService.GetEquipment(equipmentId);
@@ -64,6 +61,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpPost]
         [Route("CreateEquipment")]
+        [Authorize(Roles = "Admin")]
         public async Task<string> AddNewEquipment([FromBody] Equipment equipment)
         {
             return await _adminService.AddNewEquipment(equipment);
@@ -71,6 +69,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpPut]
         [Route("UpdateEquipment")]
+        [Authorize(Roles = "Admin")]
         public async Task<string> UpdateEquipment([FromBody] Equipment equipment)
         {
             return await _adminService.UpdateEquipment(equipment);
@@ -79,6 +78,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteEquipment/{equipmentId}")]
+        [Authorize(Roles = "Admin")]
         public async Task<string> DeleteEquipment(short equipmentId)
         {
             return await _adminService.DeleteEquipment(equipmentId);

@@ -13,7 +13,7 @@ using RPGVideoGameAPI.Services;
 
 namespace RPGVideoGameAPI.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ItemsController : ControllerBase
@@ -40,7 +40,6 @@ namespace RPGVideoGameAPI.Controllers
         #region Methods
 
         [HttpGet]
-        [Authorize]
         public async Task<IEnumerable<object>> GetAllItems()
         {
             return await _adminService.GetAllItems();
@@ -48,7 +47,6 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpGet]
         [Route("GetOne")]
-        [Authorize]
         public async Task<object> GetOneItem([FromQuery]string itemName)
         {
             return await _adminService.GetItem(itemName);
@@ -56,6 +54,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpPost]
         [Route("CreateItem")]
+        [Authorize(Roles = "Admin")]
         public async Task<string> AddNewItem([FromBody] Item item)
         {
             return await _adminService.AddNewItem(item);
@@ -63,6 +62,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpPut]
         [Route("UpdateItem")]
+        [Authorize(Roles = "Admin")]
         public async Task<string> UpdateItem([FromBody] Item item)
         {
             return await _adminService.UpdateItem(item);
@@ -71,6 +71,7 @@ namespace RPGVideoGameAPI.Controllers
 
         [HttpDelete]
         [Route("DeleteItem")]
+        [Authorize(Roles = "Admin")]
         public async Task<string> DeleteItem([FromQuery]string itemName)
         {
             return await _adminService.DeleteItem(itemName);

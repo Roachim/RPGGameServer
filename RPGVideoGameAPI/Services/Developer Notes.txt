@@ -14,3 +14,6 @@ Additional features to add:
 - Give characters passives
 - Give characters skills
 - Add inventories to new characters when created
+
+
+Maybe change the way profiles are retrieved so that the name of the profile type is displayed instead of the number for it.

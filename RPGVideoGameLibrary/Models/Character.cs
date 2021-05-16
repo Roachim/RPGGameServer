@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 #nullable disable
 
@@ -10,7 +9,7 @@ namespace RPGVideoGameLibrary.Models
     {
         public Character()
         {
-            CharactersPassives = new HashSet<CharactersPassive>();
+            CharactersPassives = new HashSet<CharactersPassife>();
             CharactersSkills = new HashSet<CharactersSkill>();
         }
 
@@ -37,12 +36,7 @@ namespace RPGVideoGameLibrary.Models
         public virtual Equipment RightHandNavigation { get; set; }
         public virtual Profile UidNavigation { get; set; }
         public virtual Inventory Inventory { get; set; }
-        public virtual ICollection<CharactersPassive> CharactersPassives { get; set; }
+        public virtual ICollection<CharactersPassife> CharactersPassives { get; set; }
         public virtual ICollection<CharactersSkill> CharactersSkills { get; set; }
-
-        public static explicit operator Character(Task<object> v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
