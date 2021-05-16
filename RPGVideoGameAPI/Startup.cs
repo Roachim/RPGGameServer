@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using RPGVideoGameAPI.MDBControllers;
+using RPGVideoGameAPI.MDBServices;
 using Microsoft.IdentityModel.Tokens;
 //using RPGVideoGameAPI.Data;
 using RPGVideoGameLibrary.Models;
 using RPGVideoGameAPI.Services;
+using RPGVideoGameLibrary.Interfaces;
+using RPGVideoGameLibrary.MDBModels;
 
 namespace RPGVideoGameAPI
 {
@@ -36,6 +41,14 @@ namespace RPGVideoGameAPI
 
             //services.AddDbContext<RPGVideoGameAPIContext>(options =>
             //        options.UseSqlServer(Configuration.GetConnectionString("RPGVideoGameAPIContext")));
+
+            services.Configure<RPGDatabaseSettings>
+                (Configuration.GetSection(nameof(RPGDatabaseSettings)));
+
+            services.AddSingleton<IRPGDatabaseSettings>
+                (sp => sp.GetRequiredService<IOptions<RPGDatabaseSettings>>().Value);
+
+            services.AddSingleton<MDBUserService>();
 
             services.AddSingleton<OnlineRPGContext>();
             services.AddSingleton<UserAccountService>();
