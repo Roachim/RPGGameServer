@@ -92,6 +92,9 @@ namespace RPGVideoGameAPI.Services
         /// <returns>string telling whether or not item was deleted</returns>
         public async Task<string> DeleteItem(string itemName)
         {
+            //starts a transaction
+            var transaction = await _context.Database.BeginTransactionAsync();
+            //remove from join table first
             foreach (var i in _context.InventoryItems)
             {
                 if (!String.Equals(i.ItemName, itemName, StringComparison.CurrentCultureIgnoreCase))
@@ -100,10 +103,10 @@ namespace RPGVideoGameAPI.Services
                 }
 
                 _context.InventoryItems.Remove(i);
-                
-                //_context.InventoryItems.Remove(_context.InventoryItems.Select(s => {s.ItemName == itemName}));
             }
+            //save changes to join table
             await _context.SaveChangesAsync();
+
             Item item = await _context.Items.FindAsync(itemName);
             
             if (item == null)
@@ -111,9 +114,13 @@ namespace RPGVideoGameAPI.Services
                 return "No item found";
             }
             _context.Items.Remove(item);
+            //save changes to item table
             await _context.SaveChangesAsync();
-            //remove from join table first
             
+
+            //Commits the two changes done to the table at once
+            await transaction.CommitAsync();
+
             return $"Deleted item for {item.ItemName}";
         }
 
@@ -176,6 +183,7 @@ namespace RPGVideoGameAPI.Services
         /// <returns>string telling whether or not skill was deleted</returns>
         public async Task<string> DeleteSkill(string skillName)
         {
+            var transaction = await _context.Database.BeginTransactionAsync();
             //remove from join table
             foreach (var i in _context.CharactersSkills)
             {
@@ -197,6 +205,7 @@ namespace RPGVideoGameAPI.Services
            
             _context.Skills.Remove(skill);
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
             return $"Deleted skill {skill.SkillName}";
         }
 
@@ -260,6 +269,7 @@ namespace RPGVideoGameAPI.Services
         /// <returns>string telling whether or not passive was deleted</returns>
         public async Task<string> DeletePassive(string passiveName)
         {
+            var transaction = await _context.Database.BeginTransactionAsync();
             //delete from join table
             foreach (var i in _context.CharactersPassives)
             {
@@ -278,10 +288,11 @@ namespace RPGVideoGameAPI.Services
             {
                 return "No item found";
             }
-            //remove from join table
+
             
             _context.Passives.Remove(passive);
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
             return $"Deleted {passive.PassiveName}";
         }
 
