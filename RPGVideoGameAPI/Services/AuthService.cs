@@ -61,7 +61,7 @@ namespace RPGVideoGameAPI.Services
                     new Claim(JwtRegisteredClaimNames.Email, profile.Email),
                     new Claim(ClaimTypes.Role, await GetRole(profile.RoleId))
                 }),
-                Expires = DateTime.UtcNow.AddHours(2),
+                Expires = DateTime.UtcNow.AddHours(2),//The potential frontend will have to periodically request new tokens, assuming the player is active
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
