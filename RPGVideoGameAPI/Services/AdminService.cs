@@ -344,21 +344,12 @@ namespace RPGVideoGameAPI.Services
             return new { equipment.EquipmentId, equipment.Name, Type = type.Name, equipment.Description, equipment.Hp, equipment.Atk, equipment.Def };
         }
 
-        public IEnumerable<Object> GetUnusedEquipment()
+        /// <summary>
+        /// Calls stored procedure GetUnusedEquipment on the database
+        /// </summary>
+        /// <returns>List of ProcedureEquipment</returns>
+        public IEnumerable<ProcedureEquipment> GetUnusedEquipment()
         {
-            //create a list. - Call procedure on to list. - return list.
-
-            //Task<List<object>> task = new Task<List<object>>(_context.Equipment.FromSqlRaw("GetUnusedEquipment")
-            //    .Select(e => new { e.Name, e.EquipmentType, e.Description }).ToList());
-
-            //Task<IEnumerable<Object>> list = await new Task<IEnumerable<Object>>(_context.Equipment.FromSqlRaw("GetUnusedEquipment").ToList());
-
-            var command = new SqlCommand("GetUnusedEquipment");
-            //await _context.Equipment.FromSqlRaw("GetUnusedEquipment").ToListAsync();
-
-            //String task = new String(_context.Equipment.FromSqlRaw("EXECUTE dbo.GetUnusedEquipment").ToString());
-            //IEnumerable<object> list = _context.Equipment.FromSqlRaw() ("EXECUTE dbo.GetUnusedEquipment")
-
             return _context.Set<ProcedureEquipment>().FromSqlRaw("GetUnusedEquipment");
         }
 
