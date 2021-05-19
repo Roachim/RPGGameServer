@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using RPGVideoGameLibrary.Models;
 
 namespace RPGVideoGameAPI.Services
@@ -340,6 +342,24 @@ namespace RPGVideoGameAPI.Services
             EquipmentType type = await _context.EquipmentTypes.FindAsync(equipment.EquipmentType);
 
             return new { equipment.EquipmentId, equipment.Name, Type = type.Name, equipment.Description, equipment.Hp, equipment.Atk, equipment.Def };
+        }
+
+        public IEnumerable<Object> GetUnusedEquipment()
+        {
+            //create a list. - Call procedure on to list. - return list.
+
+            //Task<List<object>> task = new Task<List<object>>(_context.Equipment.FromSqlRaw("GetUnusedEquipment")
+            //    .Select(e => new { e.Name, e.EquipmentType, e.Description }).ToList());
+
+            //Task<IEnumerable<Object>> list = await new Task<IEnumerable<Object>>(_context.Equipment.FromSqlRaw("GetUnusedEquipment").ToList());
+
+            var command = new SqlCommand("GetUnusedEquipment");
+            //await _context.Equipment.FromSqlRaw("GetUnusedEquipment").ToListAsync();
+
+            //String task = new String(_context.Equipment.FromSqlRaw("EXECUTE dbo.GetUnusedEquipment").ToString());
+            //IEnumerable<object> list = _context.Equipment.FromSqlRaw() ("EXECUTE dbo.GetUnusedEquipment")
+
+            return _context.Set<ProcedureEquipment>().FromSqlRaw("GetUnusedEquipment");
         }
 
 
