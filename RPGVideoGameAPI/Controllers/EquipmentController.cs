@@ -59,6 +59,14 @@ namespace RPGVideoGameAPI.Controllers
             return await _adminService.GetEquipment(equipmentId);
         }
 
+        [HttpGet]
+        [Route("UnusedEquipment")]
+        [Authorize(Roles = "Admin")]
+        public IEnumerable<Object> GetUnusedEquipment()
+        {
+            return _adminService.GetUnusedEquipment();
+        }
+
         [HttpPost]
         [Route("CreateEquipment")]
         [Authorize(Roles = "Admin")]

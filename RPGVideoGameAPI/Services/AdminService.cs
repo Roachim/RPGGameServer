@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using RPGVideoGameLibrary.Models;
 
 namespace RPGVideoGameAPI.Services
@@ -340,6 +342,15 @@ namespace RPGVideoGameAPI.Services
             EquipmentType type = await _context.EquipmentTypes.FindAsync(equipment.EquipmentType);
 
             return new { equipment.EquipmentId, equipment.Name, Type = type.Name, equipment.Description, equipment.Hp, equipment.Atk, equipment.Def };
+        }
+
+        /// <summary>
+        /// Calls stored procedure GetUnusedEquipment on the database
+        /// </summary>
+        /// <returns>List of ProcedureEquipment</returns>
+        public IEnumerable<ProcedureEquipment> GetUnusedEquipment()
+        {
+            return _context.Set<ProcedureEquipment>().FromSqlRaw("GetUnusedEquipment");
         }
 
 

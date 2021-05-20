@@ -14,8 +14,9 @@
       "launchBrowser": true,
       "launchUrl": "api/Profiles",
       "environmentVariables": {
-        "RPGVideoGameMongoConnection": "mongodb+srv://Joachim:C1lwoOpwcu5YgYm7@cluster0.gfvi7.mongodb.net/RPGDB?retryWrites=true&w=majority",
         "JWT_Secret": "MyVerySecretSecret",
+        "RPGVideoGameMongoConnection": "mongodb+srv://Joachim:C1lwoOpwcu5YgYm7@cluster0.gfvi7.mongodb.net/RPGDB?retryWrites=true&w=majority",
+        "SQLConnection": "Server=tcp:kearpgserver.database.windows.net,1433;Initial Catalog=RPGDatabase;Persist Security Info=False;User ID=qwer14789;Password=plz5555NOREMORE;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
@@ -23,11 +24,12 @@
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "api/Profiles",
-      "applicationUrl": "http://localhost:5000",
       "environmentVariables": {
+        "JWT_Secret": "MyVerySecretSecret",
         "RPGVideoGameMongoConnection": "mongodb+srv://Joachim:C1lwoOpwcu5YgYm7@cluster0.gfvi7.mongodb.net/RPGDB?retryWrites=true&w=majority",
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "applicationUrl": "http://localhost:5000"
     }
   }
 }
