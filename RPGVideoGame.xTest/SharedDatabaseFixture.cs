@@ -15,7 +15,7 @@ namespace RPGVideoGame.xTest
         private static readonly object _lock = new object();
         private static bool _databaseInitialized;
 
-        public DbConnection Connection;
+        public DbConnection Connection { get; }
 
         public SharedDatabaseFixture()
         {
