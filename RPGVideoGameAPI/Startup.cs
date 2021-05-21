@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -17,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using RPGVideoGameAPI.MDBControllers;
 using RPGVideoGameAPI.MDBServices;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 //using RPGVideoGameAPI.Data;
 using RPGVideoGameLibrary.Models;
 using RPGVideoGameAPI.Services;
@@ -78,6 +80,38 @@ namespace RPGVideoGameAPI
 
 
             services.AddCors();
+
+            services.AddSwaggerGen(s =>
+            {
+                s.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "RPGGameServer", 
+                    Version = "v1"
+                });
+
+                s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with prefix Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+
+                s.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -95,10 +129,18 @@ namespace RPGVideoGameAPI
 
             app.UseRouting();
 
+            app.UseSwagger();
+
             //Use when Passwords in DB have been Encrypted
             app.UseAuthentication();
 
             app.UseAuthorization();
+
+            app.UseSwaggerUI(s =>
+            {
+                s.SwaggerEndpoint("/swagger/v1/swagger.json", "RPGGameServer v1");
+                s.RoutePrefix = "api/help";
+            });
 
             app.UseEndpoints(endpoints =>
             {
