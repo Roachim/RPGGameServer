@@ -1,0 +1,13 @@
+{
+  "exclude": [
+    "**/bin",
+    "**/bower_components",
+    "**/jspm_packages",
+    "**/node_modules",
+    "**/obj",
+    "**/platforms"
+  ],
+  "ConnectionStrings": {
+    "RPGVideoGameAPIContext": "Server=tcp:kearpgserver.database.windows.net,1433;Initial Catalog=RPGDatabase;Persist Security Info=False;User ID=qwer14789;Password=plz5555NOREMORE;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+  }
+}
