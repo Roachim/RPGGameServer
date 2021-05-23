@@ -20,7 +20,9 @@ namespace RPGVideoGame.xTest
         public SharedDatabaseFixture()
         {
             Connection = new SqlConnection(
-                @"Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=OnlineRPG;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                Environment.GetEnvironmentVariable("SQLConnection"));
+
+            Environment.SetEnvironmentVariable("SQLConnection", "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=OnlineRPG;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
 
             Seed();
 
