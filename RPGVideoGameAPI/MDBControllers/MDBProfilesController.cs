@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using RPGVideoGameAPI.MDBServices;
 using RPGVideoGameLibrary.MDBModels;
 
@@ -33,6 +34,7 @@ namespace RPGVideoGameAPI.MDBControllers
 
         // GET: api/<MDBProfilesController>
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public List<MDBProfile> Get()
         {
             return _mdbUserService.GetProfiles();
